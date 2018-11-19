@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <title>Access Denied</title>
+    </head>
+    <body>
+
+        <div layout:fragment="pageHeader">
+            <section class="content-header">
+                <h3><i class="fa fa-warning text-red"></i>You are not allowed to view this content.</h3>
+            </section>
+        </div>
+
+        <div layout:fragment="content">
+            <div>
+                <p>
+                    You may want to go <a href="#" th:href="@{/home}">Home</a>
+                </p>
+            </div>
+        </div>
+
+    </body>
+</html>
