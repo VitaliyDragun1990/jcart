@@ -18,6 +18,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <sonar.jdbc.url>jdbc:postgresql://localhost/sonarqube?currentSchema=sonar</sonar.jdbc.url>
+        <sonar.jdbc.username>postgres</sonar.jdbc.username>
+        <sonar.jdbc.password>19900225</sonar.jdbc.password>
     </properties>
 
     <dependencyManagement>
@@ -31,6 +34,16 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.5.0.1254</version>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>

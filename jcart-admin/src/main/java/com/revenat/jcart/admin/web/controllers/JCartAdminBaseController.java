@@ -1,6 +1,7 @@
 package com.revenat.jcart.admin.web.controllers;
 
 import com.revenat.jcart.admin.security.AuthenticatedUser;
+import com.revenat.jcart.common.services.JCLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,10 +10,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 public abstract class JCartAdminBaseController {
 
+    protected static final JCLogger LOGGER = JCLogger.getLogger(JCartAdminBaseController.class);
+
     @Autowired
     protected MessageSource messageSource;
 
-    public String getMessage(String code) {
+    protected abstract String getHeaderTitle();
+
+    protected String getMessage(String code) {
         return messageSource.getMessage(code, null, null);
     }
 
@@ -25,7 +30,7 @@ public abstract class JCartAdminBaseController {
         return authenticatedUser;
     }
 
-    public static AuthenticatedUser getCurrentUser() {
+    protected static AuthenticatedUser getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof AuthenticatedUser) {
             return (AuthenticatedUser) principal;
