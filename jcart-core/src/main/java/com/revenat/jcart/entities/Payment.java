@@ -41,4 +41,13 @@ public class Payment extends AbstractEntity implements Serializable {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Payment{");
+        sb.append("amount=").append(amount);
+        sb.append(", id=").append(id);
+        sb.append('}');
+        return sb.toString();
+    }
 }

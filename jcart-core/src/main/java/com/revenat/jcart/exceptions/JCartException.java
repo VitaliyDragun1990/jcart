@@ -1,4 +1,4 @@
-package com.revenat.jcart;
+package com.revenat.jcart.exceptions;
 
 public class JCartException extends RuntimeException {
 

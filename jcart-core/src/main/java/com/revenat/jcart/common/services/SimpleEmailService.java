@@ -18,8 +18,12 @@ public class SimpleEmailService implements EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    @Value("${support.email}")
     private String supportEmail;
+
+    @Value("${support.email}")
+    public void setSupportEmail(String supportEmail) {
+        this.supportEmail = supportEmail;
+    }
 
     public void sendEmail(String to, String subject, String content) {
         try {

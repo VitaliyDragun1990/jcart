@@ -129,4 +129,14 @@ public class Order extends AbstractEntity implements Serializable {
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Order{");
+        sb.append("orderNumber='").append(orderNumber).append('\'');
+        sb.append(", status=").append(status);
+        sb.append(", id=").append(id);
+        sb.append('}');
+        return sb.toString();
+    }
 }

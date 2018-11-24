@@ -76,4 +76,14 @@ public class OrderItem extends AbstractEntity implements Serializable {
         result = 31 * result + (product != null ? product.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("OrderItem{");
+        sb.append("price=").append(price);
+        sb.append(", quantity=").append(quantity);
+        sb.append(", id=").append(id);
+        sb.append('}');
+        return sb.toString();
+    }
 }

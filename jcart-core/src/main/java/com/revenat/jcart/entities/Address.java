@@ -64,4 +64,18 @@ public class Address extends AbstractEntity implements Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Address{");
+        sb.append("addressLine1='").append(addressLine1).append('\'');
+        sb.append(", addressLine2='").append(addressLine2).append('\'');
+        sb.append(", city='").append(city).append('\'');
+        sb.append(", state='").append(state).append('\'');
+        sb.append(", zipCode='").append(zipCode).append('\'');
+        sb.append(", country='").append(country).append('\'');
+        sb.append(", id=").append(id);
+        sb.append('}');
+        return sb.toString();
+    }
 }

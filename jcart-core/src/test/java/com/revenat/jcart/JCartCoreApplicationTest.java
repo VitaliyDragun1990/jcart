@@ -1,6 +1,7 @@
 package com.revenat.jcart;
 
 import com.revenat.jcart.common.services.SimpleEmailService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,12 @@ public class JCartCoreApplicationTest {
     public void testDummy() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             String schema = connection.getCatalog();
-            assertEquals("jcart", schema);
+            assertEquals("JCART", schema);
         }
     }
 
     @Test
+    @Ignore
     public void testSendEmail() {
         emailService.sendEmail("visperboy@gmail.com", "JCart - Test Mail", "This is a test email from JCart");
     }

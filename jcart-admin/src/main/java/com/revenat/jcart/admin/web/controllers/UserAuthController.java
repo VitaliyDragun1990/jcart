@@ -1,9 +1,10 @@
 package com.revenat.jcart.admin.web.controllers;
 
-import com.revenat.jcart.JCartException;
+import com.revenat.jcart.exceptions.JCartException;
 import com.revenat.jcart.admin.web.utils.WebUtils;
 import com.revenat.jcart.common.services.EmailService;
 import com.revenat.jcart.entities.User;
+import com.revenat.jcart.security.JCartSecurityService;
 import com.revenat.jcart.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
