@@ -4,12 +4,14 @@ import com.revenat.jcart.base.AbstractEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "roles")
-public class Role extends AbstractEntity {
+public class Role extends AbstractEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false, unique = true)
     @NotEmpty
@@ -28,14 +30,6 @@ public class Role extends AbstractEntity {
             inverseJoinColumns = {@JoinColumn(name = "PERM_ID", referencedColumnName = "ID")}
     )
     private List<Permission> permissions = new ArrayList<>();
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

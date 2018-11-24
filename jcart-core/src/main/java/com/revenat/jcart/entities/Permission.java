@@ -3,12 +3,14 @@ package com.revenat.jcart.entities;
 import com.revenat.jcart.base.AbstractEntity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "permissions")
-public class Permission extends AbstractEntity {
+public class Permission extends AbstractEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false, unique = true)
     private String name;
