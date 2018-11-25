@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringApplicationConfiguration(classes = {JCartAdminApplication.class, MockTemplateConfig.class})
 @WebAppConfiguration
 @ActiveProfiles("test")
-public class UserAuthControllerIntegrationTest {
+public class UserAuthControllerIntegrationIT {
 
     private static final String DUMMY_EMAIL = "dummy@gmail.com";
     private static final String DUMMY_TOKEN = "password_reset_token";

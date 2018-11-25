@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = JCartCoreApplication.class)
-public class JCartCoreApplicationTest {
+public class JCartCoreApplicationIT {
 
     @Autowired
     private DataSource dataSource;

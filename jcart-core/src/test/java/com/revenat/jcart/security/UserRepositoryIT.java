@@ -1,7 +1,7 @@
 package com.revenat.jcart.security;
 
 import com.revenat.jcart.JCartCoreApplication;
-import com.revenat.jcart.entities.Role;
+import com.revenat.jcart.entities.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,31 +9,33 @@ import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @IntegrationTest
 @SpringApplicationConfiguration(classes = JCartCoreApplication.class)
-public class RoleRepositoryTest {
+public class UserRepositoryIT {
 
     @Autowired
-    private RoleRepository roleRepository;
+    private UserRepository userRepository;
 
     @Test
-    public void findByNamePositiveWhenExists() {
-        String roleName = "ROLE_ADMIN";
+    public void findByEmailPositiveWhenValidEmail() {
+        String email = "john@gmail.com";
 
-        Role role = roleRepository.findByName(roleName);
+        User user = userRepository.findByEmail(email);
 
-        assertNotNull(role);
+        assertNotNull(user);
+        assertThat(user.getEmail(), equalTo(email));
     }
 
     @Test
-    public void findByNameNegativeWhenNotExists() {
-        String wrongName = "ROLE_IMPOSTOR";
+    public void findByEmailNegativeWhenUnknownEmail() {
+        String unknownEmail = "unknown@gmail.com";
 
-        Role role = roleRepository.findByName(wrongName);
+        User user = userRepository.findByEmail(unknownEmail);
 
-        assertNull(role);
+        assertNull(user);
     }
 }

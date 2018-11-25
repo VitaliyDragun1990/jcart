@@ -6,30 +6,29 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(JCartAdminApplication.class)
 @WebAppConfiguration
-public class ErrorControllerIntegrationTest {
-
+public class AuthenticationMechanismIT {
+    
     @Autowired
     private WebApplicationContext context;
-
+    
     private MockMvc mockMvc;
 
     @Before
-    public void setUpMockMvc() {
+    public void setUp() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply(springSecurity())
@@ -37,16 +36,14 @@ public class ErrorControllerIntegrationTest {
     }
 
     @Test
-    @WithUserDetails("john@gmail.com")
-    public void testAccessDeniedLoggedIn() throws Exception {
-        mockMvc.perform(get("/403"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("error/accessDenied"));
+    public void testUnauthenticatedInvalidCredentials() throws Exception {
+        mockMvc.perform(formLogin().user("invalid").password("invalid"))
+                .andExpect(unauthenticated());
     }
 
     @Test
-    public void testAccessDeniedNotLoggedIn() throws Exception {
-        mockMvc.perform(get("/403"))
-                .andExpect(status().is3xxRedirection());
+    public void testAuthenticatedValidCredentials() throws Exception {
+        mockMvc.perform(formLogin().user("john@gmail.com").password("green"))
+                .andExpect(authenticated());
     }
 }
