@@ -16,6 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <sonar.jacoco.reportPaths>
@@ -57,6 +58,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18.1</version>
                 <configuration>
                     <includes>
                         <include>**/*IT.java</include>
@@ -76,6 +78,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>1.3.0.RELEASE</version>
                 <configuration>
                     <classifier>exec</classifier>
                 </configuration>
@@ -85,6 +88,19 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/revenat/jcart/base/*</exclude>
+                        <exclude>com/revenat/jcart/entities/*</exclude>
+                        <exclude>com/revenat/jcart/exceptions/*</exclude>
+                        <exclude>com/revenat/jcart/admin/config/*</exclude>
+                        <exclude>com/revenat/jcart/admin/security/AuthenticatedUser.class</exclude>
+                        <exclude>**/*Config.*</exclude>
+                        <exclude>**/*Logger.*</exclude>
+                        <exclude>**/*Application.*</exclude>
+                    </excludes>
+                    <destFile>${sonar.jacoco.reportPath}</destFile>
+                </configuration>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
@@ -126,7 +142,7 @@
                                         <limit implementation="org.jacoco.report.check.Limit">
                                             <counter>COMPLEXITY</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.50</minimum>
+                                            <minimum>0.20</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -134,15 +150,6 @@
                         </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>com/revenat/jcart/base/*</exclude>
-                        <exclude>com/revenat/jcart/entities/*</exclude>
-                        <exclude>com/revenat/jcart/exceptions/*</exclude>
-                        <exclude>**/*Config.*</exclude>
-                    </excludes>
-                    <destFile>${sonar.jacoco.reportPath}</destFile>
-                </configuration>
             </plugin>
 
         </plugins>
