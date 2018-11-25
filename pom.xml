@@ -23,8 +23,14 @@
             ${project.basedir}/target/jacoco.exec
         </sonar.jacoco.reportPaths>
         <sonar.junit.reportPaths>
-            target/surefire-reports
+            ${project.basedir}/target/surefire-reports
         </sonar.junit.reportPaths>
+        <sonar.coverage.exclusions>
+            com/revenat/jcart/base/*,com/revenat/jcart/entities/*,
+            com/revenat/jcart/exceptions/*,com/revenat/jcart/admin/config/*,
+            com/revenat/jcart/admin/security/AuthenticatedUser.class,
+            **/*Config.*,**/*Logger.*,**/*Application.*
+        </sonar.coverage.exclusions>
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     </properties>
