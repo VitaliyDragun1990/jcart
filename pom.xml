@@ -20,15 +20,15 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <sonar.jacoco.reportPaths>
-            ${project.basedir}/target/jacoco.exec
+            ${project.basedir}/target/jacoco.exec,${project.basedir}/target/jacoco-it.exec
         </sonar.jacoco.reportPaths>
         <sonar.junit.reportPaths>
             ${project.basedir}/target/surefire-reports
         </sonar.junit.reportPaths>
         <sonar.coverage.exclusions>
-            com/revenat/jcart/base/*,com/revenat/jcart/entities/*,
-            com/revenat/jcart/exceptions/*,com/revenat/jcart/admin/config/*,
-            com/revenat/jcart/admin/security/AuthenticatedUser.class,
+            **/jcart/base/*,**/jcart/entities/*,
+            **/jcart/exceptions/*,**/jcart/admin/config/*,
+            **/jcart/admin/security/AuthenticatedUser.class,
             **/*Config.*,**/*Logger.*,**/*Application.*
         </sonar.coverage.exclusions>
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
