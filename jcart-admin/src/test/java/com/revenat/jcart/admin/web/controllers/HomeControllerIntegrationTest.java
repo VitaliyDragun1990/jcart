@@ -15,6 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -66,4 +70,28 @@ public class HomeControllerIntegrationTest {
                 .andExpect(view().name("home"))
                 .andExpect(model().attributeExists("authenticatedUser"));
     }
+
+    @Test
+    public void testGetHeaderTitle() {
+        controller = context.getBean("homeController", HomeController.class);
+
+        assertThat(controller.getHeaderTitle(), equalTo("Home"));
+    }
+
+    @Test
+    @WithUserDetails("john@gmail.com")
+    public void testGetCurrentUser() {
+        AuthenticatedUser authenticatedUser = HomeController.getCurrentUser();
+
+        assertThat(authenticatedUser.getUsername(), equalTo("john@gmail.com"));
+    }
+
+    @Test
+    @WithUserDetails("john@gmail.com")
+    public void testIsLoggedIn_OK() {
+        boolean isLoggedIn = HomeController.isLoggedIn();
+
+        assertTrue(isLoggedIn);
+    }
+
 }

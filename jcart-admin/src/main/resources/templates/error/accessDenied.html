@@ -4,20 +4,23 @@
       layout:decorator="layout/mainLayout"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
     <head>
-        <title>Access Denied</title>
+        <title th:text="#{title.accessDenied}">Access Denied</title>
     </head>
     <body>
 
         <div layout:fragment="pageHeader">
             <section class="content-header">
-                <h3><i class="fa fa-warning text-red"></i>You are not allowed to view this content.</h3>
+                <h3><i class="fa fa-warning text-red"></i><span th:text="#{message.accessDenied.notAllowed}">
+                    You are not allowed to view this content.
+                </span></h3>
             </section>
         </div>
 
         <div layout:fragment="content">
             <div>
                 <p>
-                    You may want to go <a href="#" th:href="@{/home}">Home</a>
+                    <span th:text="#{message.accessDenied.goHome}">
+                        You may want to go</span> <a href="#" th:href="@{/home}" th:text="#{message.accessDenied.home}">Home</a>
                 </p>
             </div>
         </div>

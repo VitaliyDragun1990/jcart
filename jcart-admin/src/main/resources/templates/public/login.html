@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/questLayout">
     <head>
-        <title>Log In</title>
+        <title th:text="#{title.login}">Log In</title>
     </head>
     <body>
         <div layout:fragment="content">
@@ -28,7 +28,7 @@
                         <div class="row">
                             <div class="form-group col-xs-offset-8 col-xs-4">
                                 <button type="submit" class="btn btn-primary btn-block btn-flat"
-                                        th:text="#{label.login}">LogIn
+                                        th:text="#{label.login}">Login
                                 </button>
                             </div>
                         </div>

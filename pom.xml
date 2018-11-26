@@ -28,7 +28,7 @@
         <sonar.coverage.exclusions>
             **/jcart/base/*,**/jcart/entities/*,
             **/jcart/exceptions/*,**/jcart/admin/config/*,
-            **/jcart/admin/security/*User.*,
+            **/jcart/admin/security/*User.*,**/jcart/admin/web/utils/MessageCodes.*
             **/*Config.*,**/*Logger.*,**/*Application.*
         </sonar.coverage.exclusions>
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>

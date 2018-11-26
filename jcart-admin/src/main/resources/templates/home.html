@@ -4,19 +4,19 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       layout:decorator="layout/mainLayout">
     <head>
-        <title>Home</title>
+        <title th:text="#{title.home}">Home</title>
     </head>
     <body>
         <div layout:fragment="pageHeader">
             <section class="content-header">
                 <h1>
-                    JCart Administration
-                    <small>Manage JCart Site Content</small>
+                    <span th:text="#{message.home.header}">JCart Administration</span>
+                    <small th:text="#{message.home.subtitle}">Manage JCart Site Content</small>
                 </h1>
             </section>
         </div>
         <div layout:fragment="content">
-            <p>Welcome <span th:text="${authenticatedUser.user.name}">User</span>!</p>
+            <p> <span th:text="#{message.home.greeting}">Welcome</span> <span th:text="${authenticatedUser.user.name}">User</span>!</p>
         </div>
     </body>
 </html>

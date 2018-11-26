@@ -36,16 +36,16 @@
                 <!-- Logo -->
                 <a href="#" th:href="@{/home}" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
-                    <span class="logo-mini"><b>JC</b></span>
+                    <span class="logo-mini"><b th:text="#{message.mainLayout.miniLogo}">JC</b></span>
                     <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg"><b>JCart Admin</b></span>
+                    <span class="logo-lg"><b th:text="#{message.mainLayout.logo}">JCart Admin</b></span>
                 </a>
 
                 <!-- Header Navbar -->
                 <nav class="navbar navbar-static-top" role="navigation">
                     <!-- Sidebar toggle button-->
                     <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                        <span class="sr-only">Toggle navigation</span>
+                        <span class="sr-only" th:text="#{message.mainLayout.toggle}">Toggle navigation</span>
                     </a>
                     <!-- Navbar Right Menu -->
                     <div class="navbar-custom-menu">
@@ -100,7 +100,9 @@
                         <div class="pull-left info">
                             <p><span sec:authentication="principal.user.name">User</span></p>
                             <!-- Status -->
-                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                            <a href="#"><i class="fa fa-circle text-success"></i>
+                                <span th:text="#{message.mainLayout.status.online}">Online</span>
+                            </a>
                         </div>
                     </div>
 
@@ -109,28 +111,28 @@
                         <!-- <li class="header">HEADER</li> -->
                         <!-- Optionally, you can add icons to the links -->
                         <li th:class="${CURRENT_MENU == 'Home'}? 'active' : ''" >
-                            <a href="#" th:href="@{'/home'}"><i class="fa fa-home"></i><span>Home</span></a>
+                            <a href="#" th:href="@{'/home'}"><i class="fa fa-home"></i><span th:text="#{label.home}">Home</span></a>
                         </li>
                         <li th:class="${CURRENT_MENU == 'Categories'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_CATEGORIES')">
-                            <a href="#" th:href="@{'/categories'}"><i class="fa fa-folder-open"></i><span>Categories</span></a>
+                            <a href="#" th:href="@{'/categories'}"><i class="fa fa-folder-open"></i><span th:text="#{label.categories}">Categories</span></a>
                         </li>
                         <li th:class="${CURRENT_MENU == 'Products'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_PRODUCTS')">
-                            <a href="#" th:href="@{'/products'}"><i class="fa fa-file"></i><span>Products</span></a>
+                            <a href="#" th:href="@{'/products'}"><i class="fa fa-file"></i><span th:text="#{label.products}">Products</span></a>
                         </li>
                         <li th:class="${CURRENT_MENU == 'Orders'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_ORDERS')">
-                            <a href="#" th:href="@{'/orders'}"><i class="fa fa-cart-arrow-down"></i><span>Orders</span></a>
+                            <a href="#" th:href="@{'/orders'}"><i class="fa fa-cart-arrow-down"></i><span th:text="#{label.orders}">Orders</span></a>
                         </li>
                         <li th:class="${CURRENT_MENU == 'Customers'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_CUSTOMERS')">
-                            <a href="#" th:href="@{'/customers'}"><i class="fa fa-smile-o"></i><span>Customers</span></a>
+                            <a href="#" th:href="@{'/customers'}"><i class="fa fa-smile-o"></i><span th:text="#{label.customers}">Customers</span></a>
                         </li>
                         <li th:class="${CURRENT_MENU == 'Users'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_USERS')">
-                            <a href="#" th:href="@{'/users'}"><i class="fa fa-users"></i><span>Users</span></a>
+                            <a href="#" th:href="@{'/users'}"><i class="fa fa-users"></i><span th:text="#{label.permissions}">Users</span></a>
                         </li>
                         <li th:class="${CURRENT_MENU == 'Roles'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_ROLES')">
-                            <a href="#" th:href="@{'/roles'}"><i class="fa fa-user"></i><span>Roles</span></a>
+                            <a href="#" th:href="@{'/roles'}"><i class="fa fa-user"></i><span th:text="#{label.roles}">Roles</span></a>
                         </li>
                         <li th:class="${CURRENT_MENU == 'Permissions'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_PERMISSIONS')">
-                            <a href="#" th:href="@{'/permissions'}"><i class="fa fa-shield"></i><span>Permissions</span></a>
+                            <a href="#" th:href="@{'/permissions'}"><i class="fa fa-shield"></i><span th:text="#{label.permissions}">Permissions</span></a>
                         </li>
 
                     </ul><!-- /.sidebar-menu -->
@@ -140,6 +142,7 @@
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
+
                 <!-- Content Header (Page header) -->
                 <div layout:fragment="pageHeader">
                     <section class="content-header">
