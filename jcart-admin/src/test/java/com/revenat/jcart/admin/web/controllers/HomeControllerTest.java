@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(JCartAdminApplication.class)
 @WebAppConfiguration
-public class HomeControllerIntegrationTest {
+public class HomeControllerTest {
 
     private AuthenticatedUser dummyAuthentication;
 

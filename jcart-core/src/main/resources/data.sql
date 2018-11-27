@@ -39,7 +39,8 @@ INSERT INTO users (id, email, password, name, created_on, modified_on) VALUES
   (4, 'siva@gmail.com', '$2a$10$UFEPYW7Rx1qZqdHajzOnB.VBR3rvm7OI7uSix4RadfQiNhkZOi2fi', 'Siva', NOW(), NOW()),
   (5, 'user@gmail.com', '$2a$10$ByIUiNaRfBKSV6urZoBBxe4UbJ/sS6u1ZaPORHF9AtNWAuVPVz1by', 'DemoUser', NOW(), NOW()),
   (6, 'john@gmail.com', '$2a$10$vacuqbDw9I7rr6RRH8sByuktOzqTheQMfnK3XCT2WlaL7vt/3AMby', 'JohnGreen', NOW(), NOW()),
-  (7, 'visperboy@gmail.com', '$2a$10$vacuqbDw9I7rr6RRH8sByuktOzqTheQMfnK3XCT2WlaL7vt/3AMby', 'NiceGuy', NOW(), NOW())
+  (7, 'visperboy@gmail.com', '$2a$10$vacuqbDw9I7rr6RRH8sByuktOzqTheQMfnK3XCT2WlaL7vt/3AMby', 'NiceGuy', NOW(), NOW()),
+  (8, 'jack@gmail.com', '$2a$10$vacuqbDw9I7rr6RRH8sByuktOzqTheQMfnK3XCT2WlaL7vt/3AMby', 'Jack Smith', NOW(), NOW())
 
 ;
 
@@ -57,7 +58,8 @@ insert into user_role(user_id, role_id) values
   (4,2),(4,3),
   (5,4),
   (6,1),
-  (7,1)
+  (7,1),
+  (8,3)
 ;
 
 insert into categories(id, name, disp_order,disabled, created_on, modified_on) values

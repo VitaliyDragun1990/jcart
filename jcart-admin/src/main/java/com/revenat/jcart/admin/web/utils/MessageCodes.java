@@ -7,6 +7,8 @@ public class MessageCodes {
     public static final String ERROR_INVALID_USER_PASS_RESET_REQUEST = "error.invalid_password_reset_request";
     public static final String ERROR_USER_PASS_CONF_PASS_MISMATCH = "error.password_conf_password_mismatch";
     public static final String INFO_USER_PASS_UPDATED_SUCCESS = "info.password_update_success";
+    public static final String INFO_ROLE_CREATED_SUCCESSFULLY = "info.role_created_successfully";
+    public static final String INFO_ROLE_UPDATED_SUCCESSFULLY = "info.role_updated_successfully";
 
     private MessageCodes() {}
 }

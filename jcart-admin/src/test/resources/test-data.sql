@@ -34,7 +34,8 @@ INSERT INTO roles (id, name, created_on, modified_on) VALUES
 
 INSERT INTO users (id, email, password, name, created_on, modified_on) VALUES
   (1, 'john@gmail.com', '$2a$10$vacuqbDw9I7rr6RRH8sByuktOzqTheQMfnK3XCT2WlaL7vt/3AMby', 'JohnGreen', NOW(), NOW()),
-  (2, 'visperboy@gmail.com', '$2a$10$vacuqbDw9I7rr6RRH8sByuktOzqTheQMfnK3XCT2WlaL7vt/3AMby', 'NiceGuy', NOW(), NOW())
+  (2, 'visperboy@gmail.com', '$2a$10$vacuqbDw9I7rr6RRH8sByuktOzqTheQMfnK3XCT2WlaL7vt/3AMby', 'NiceGuy', NOW(), NOW()),
+  (3, 'jack@gmail.com', '$2a$10$vacuqbDw9I7rr6RRH8sByuktOzqTheQMfnK3XCT2WlaL7vt/3AMby', 'Jack Smith', NOW(), NOW())
 
 ;
 
@@ -47,7 +48,8 @@ insert into role_permission(role_id, perm_id) values
 
 insert into user_role(user_id, role_id) values
   (1,1),
-  (2,1)
+  (2,1),
+  (3,3)
 ;
 
 insert into categories(id, name, disp_order,disabled, created_on, modified_on) values

@@ -15,16 +15,17 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(JCartAdminApplication.class)
+@SpringApplicationConfiguration(classes = {JCartAdminApplication.class})
 @WebAppConfiguration
-public class ErrorControllerIntegrationTest {
+public class PermissionControllerTest {
 
     @Autowired
     private WebApplicationContext context;
+
 
     private MockMvc mockMvc;
 
@@ -38,15 +39,20 @@ public class ErrorControllerIntegrationTest {
 
     @Test
     @WithUserDetails("john@gmail.com")
-    public void testAccessDeniedLoggedIn() throws Exception {
-        mockMvc.perform(get("/403"))
+    public void testListPermissions_Success() throws Exception {
+        mockMvc.perform(get("/permissions"))
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(view().name("error/accessDenied"));
+                .andExpect(model().attributeExists("permissions"))
+                .andExpect(view().name("permissions/permissions"));
     }
 
     @Test
-    public void testAccessDeniedNotLoggedIn() throws Exception {
-        mockMvc.perform(get("/403"))
-                .andExpect(status().is3xxRedirection());
+    @WithUserDetails("jack@gmail.com")
+    public void testListPermissions_Redirect_Not_Allowed() throws Exception {
+        mockMvc.perform(get("/permissions"))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(forwardedUrl("/403"));
     }
 }

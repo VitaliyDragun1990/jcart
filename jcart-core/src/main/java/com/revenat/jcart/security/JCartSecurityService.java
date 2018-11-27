@@ -102,9 +102,9 @@ public class JCartSecurityService implements SecurityService {
         List<Permission> permissions = role.getPermissions();
 
         if (permissions != null && !permissions.isEmpty()) {
-            for (Permission permission : permissions) {
-                persistedPermissions.add(permissionRepository.findOne(permission.getId()));
-            }
+            permissions.stream()
+                    .filter(p -> p.getId() != null)
+                    .forEach(p -> persistedPermissions.add(permissionRepository.findOne(p.getId())));
         }
         return persistedPermissions;
     }
@@ -150,11 +150,9 @@ public class JCartSecurityService implements SecurityService {
         List<Role> persistedRoles = new ArrayList<>();
         List<Role> roles = user.getRoles();
         if (roles != null && !roles.isEmpty()) {
-            for (Role role : roles) {
-                if (role.getId() != null) {
-                    persistedRoles.add(roleRepository.getOne(role.getId()));
-                }
-            }
+
+            roles.stream().filter(r -> r.getId() != null)
+                    .forEach(r -> persistedRoles.add(roleRepository.getOne(r.getId())));
         }
         return persistedRoles;
     }

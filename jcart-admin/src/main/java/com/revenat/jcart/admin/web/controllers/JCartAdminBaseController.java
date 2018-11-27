@@ -15,6 +15,7 @@ public abstract class JCartAdminBaseController {
     @Autowired
     protected MessageSource messageSource;
 
+    @ModelAttribute("headerTitle")
     protected abstract String getHeaderTitle();
 
     protected String getMessage(String code) {

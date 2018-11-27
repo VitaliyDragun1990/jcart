@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringApplicationConfiguration(classes = {JCartAdminApplication.class, MockTemplateConfig.class})
 @WebAppConfiguration
 @ActiveProfiles("test")
-public class UserAuthControllerIntegrationTest {
+public class UserAuthControllerTest {
 
     private static final String DUMMY_EMAIL = "dummy@gmail.com";
     private static final String DUMMY_TOKEN = "password_reset_token";
@@ -102,7 +102,6 @@ public class UserAuthControllerIntegrationTest {
 
         mockMvc.perform(get("/resetPwd").param("email", DUMMY_EMAIL).param("token",DUMMY_TOKEN))
                 .andDo(print())
-                .andExpect(model().size(3))
                 .andExpect(model().attribute("email", DUMMY_EMAIL))
                 .andExpect(model().attribute("token", DUMMY_TOKEN))
                 .andExpect(status().isOk())
@@ -153,7 +152,6 @@ public class UserAuthControllerIntegrationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("public/resetPwd"))
-                .andExpect(model().size(4))
                 .andExpect(model().attributeExists("email", "token", "msg"));
 
         verifyZeroInteractions(securityService);
