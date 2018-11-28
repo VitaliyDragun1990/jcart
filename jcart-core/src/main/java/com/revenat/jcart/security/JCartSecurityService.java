@@ -20,6 +20,8 @@ import java.util.UUID;
 @Transactional
 public class JCartSecurityService implements SecurityService {
 
+    private static final String INVALID_EMAIL_ADDRESS = "Invalid email address";
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -34,7 +36,7 @@ public class JCartSecurityService implements SecurityService {
     public String resetPassword(String email) {
         User user = findUserByEmail(email);
         if (user == null) {
-            throw new JCartException("Invalid email address");
+            throw new JCartException(INVALID_EMAIL_ADDRESS);
         }
         String uuid = UUID.randomUUID().toString();
         user.setPasswordResetToken(uuid);
@@ -44,7 +46,7 @@ public class JCartSecurityService implements SecurityService {
     public void updatePassword(String email, String token, String password) {
         User user = findUserByEmail(email);
         if (user == null) {
-            throw new JCartException("Invalid email address");
+            throw new JCartException(INVALID_EMAIL_ADDRESS);
         }
         if (!StringUtils.hasText(token) || !token.equals(user.getPasswordResetToken())) {
             throw new JCartException("Invalid password reset token");
@@ -56,7 +58,7 @@ public class JCartSecurityService implements SecurityService {
     public boolean verifyPasswordResetToken(String email, String token) {
         User user = findUserByEmail(email);
         if (user == null) {
-            throw new JCartException("Invalid email address");
+            throw new JCartException(INVALID_EMAIL_ADDRESS);
         }
         return StringUtils.hasText(token) && token.equals(user.getPasswordResetToken());
     }

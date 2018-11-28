@@ -1,6 +1,8 @@
 package com.revenat.jcart.admin.config;
 
 import com.revenat.jcart.admin.security.PostAuthorizationFilter;
+import com.revenat.jcart.admin.web.converters.RoleCommandToRoleConverter;
+import com.revenat.jcart.admin.web.converters.RoleToRoleCommandConverter;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -14,6 +16,7 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -157,9 +160,24 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
+
+    /**
+     * Programmatically declare simple view controllers and theirs mappings.
+     * */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("public/login");
         registry.addRedirectViewController("/", "/home");
+    }
+
+    /**
+     * Allows add custom converters to registry so that we can use inject {@code ConversionService} into our components
+     * and use it like {@code conversionService.convert(source, targetType)}.
+     * */
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        super.addFormatters(registry);
+        registry.addConverter(new RoleToRoleCommandConverter());
+        registry.addConverter(new RoleCommandToRoleConverter());
     }
 }

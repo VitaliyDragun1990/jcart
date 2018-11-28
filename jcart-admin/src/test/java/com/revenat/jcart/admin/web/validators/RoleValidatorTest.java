@@ -1,5 +1,6 @@
 package com.revenat.jcart.admin.web.validators;
 
+import com.revenat.jcart.admin.web.commands.RoleCommand;
 import com.revenat.jcart.entities.Role;
 import com.revenat.jcart.security.SecurityService;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class RoleValidatorTest {
 
     @Test
     public void testValidate_OK() {
-        Role role = new Role();
+        RoleCommand role = new RoleCommand();
         role.setName(ROLE_NAME);
 
         validator.validate(role, errors);
@@ -36,7 +37,7 @@ public class RoleValidatorTest {
 
     @Test
     public void testValidate_Error() {
-        Role role = new Role();
+        RoleCommand role = new RoleCommand();
         role.setName(ROLE_NAME);
         when(securityService.getRoleByName(ROLE_NAME)).thenReturn(new Role());
 

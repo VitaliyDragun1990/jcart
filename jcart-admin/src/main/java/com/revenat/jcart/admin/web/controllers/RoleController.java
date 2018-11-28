@@ -1,10 +1,12 @@
 package com.revenat.jcart.admin.web.controllers;
 
 import com.revenat.jcart.admin.security.SecurityUtil;
+import com.revenat.jcart.admin.web.commands.RoleCommand;
 import com.revenat.jcart.entities.Permission;
 import com.revenat.jcart.entities.Role;
 import com.revenat.jcart.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +33,8 @@ public class RoleController extends JCartAdminBaseController {
 
     private static final String VIEW_PREFIX = "roles/";
 
+    @Autowired
+    private ConversionService conversionService;
     @Autowired
     protected SecurityService securityService;
     @Autowired
@@ -62,7 +66,7 @@ public class RoleController extends JCartAdminBaseController {
     }
 
     @RequestMapping(value = "/roles", method = RequestMethod.POST)
-    public String createRole(@Valid @ModelAttribute("role") Role role, BindingResult result,
+    public String createRole(@Valid @ModelAttribute("role") RoleCommand role, BindingResult result,
                              RedirectAttributes redirectAttributes) {
 
       roleValidator.validate(role, result);
@@ -70,7 +74,7 @@ public class RoleController extends JCartAdminBaseController {
           return VIEW_PREFIX + "create_role";
       }
 
-      Role persistedRole = securityService.createRole(role);
+      Role persistedRole = securityService.createRole(conversionService.convert(role, Role.class));
       LOGGER.debug("Created new role with id : {} and name : {}", persistedRole.getId(), persistedRole.getName());
       redirectAttributes.addFlashAttribute("info", getMessage(INFO_ROLE_CREATED_SUCCESSFULLY));
       return "redirect:/roles";
@@ -78,24 +82,25 @@ public class RoleController extends JCartAdminBaseController {
 
     @RequestMapping(value = "/roles/{id}", method = RequestMethod.GET)
     public String editRoleForm(@PathVariable("id") Integer id, Model model) {
-        Role roleToEdit = securityService.getRoleById(id);
+        Role role = securityService.getRoleById(id);
 
-        List<Permission> assignedPermissions = getAssignedPermissions(roleToEdit);
+        List<Permission> assignedPermissions = getAssignedPermissions(role);
 
-        roleToEdit.setPermissions(assignedPermissions);
+        role.setPermissions(assignedPermissions);
 
-        model.addAttribute("role", roleToEdit);
+        RoleCommand command = conversionService.convert(role, RoleCommand.class);
+        model.addAttribute("role", command);
 
         return VIEW_PREFIX + "edit_role";
     }
 
     @RequestMapping(value = "/roles/{id}", method = RequestMethod.POST)
-    public String updateRole(@Valid @ModelAttribute("role") Role role, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String updateRole(@Valid @ModelAttribute("role") RoleCommand role, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return VIEW_PREFIX + "edit_role";
         }
 
-        Role persistedRole = securityService.updateRole(role);
+        Role persistedRole = securityService.updateRole(conversionService.convert(role, Role.class));
         LOGGER.debug("Updated role with id: {} and name: {}", persistedRole.getId(), persistedRole.getName());
 
         redirectAttributes.addFlashAttribute("info", getMessage(INFO_ROLE_UPDATED_SUCCESSFULLY));

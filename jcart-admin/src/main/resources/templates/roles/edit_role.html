@@ -19,7 +19,7 @@
                 <div class="box-body">
 
                     <!-- Edit Role Form -->
-                    <!--/*@thymesVar id="role" type="com.revenat.jcart.entities.Role"*/-->
+                    <!--/*@thymesVar id="role" type="com.revenat.jcart.admin.web.commands.RoleCommand"*/-->
                     <form role="form" th:action="@{/roles/{id}(id=${role.id})}" th:object="${role}" method="post">
                         <p th:if="${#fields.hasErrors('global')}" th:errors="*{global}" th:class="text-red">Incorrect data</p>
 
