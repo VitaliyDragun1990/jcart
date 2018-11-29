@@ -13,8 +13,8 @@ import java.util.List;
 public class Role extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Column(nullable = false, unique = true)
     @NotEmpty
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(length = 1024)

@@ -26,7 +26,7 @@
             ${project.basedir}/target/surefire-reports
         </sonar.junit.reportPaths>
         <sonar.coverage.exclusions>
-            **/jcart/base/*,**/jcart/entities/*,**/web/commands/*
+            **/jcart/base/*,**/jcart/entities/*,**/jcart/admin/web/commands/*Command.*,
             **/jcart/exceptions/*,**/jcart/admin/config/*,
             **/jcart/admin/security/*User.*,**/jcart/admin/web/utils/MessageCodes.*,
             **/jcart/admin/security/SecurityUtil.*,

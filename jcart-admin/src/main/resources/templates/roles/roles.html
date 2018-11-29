@@ -14,7 +14,7 @@
 
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title" th:text="#{message.roles.title}">List of Roles</h3>
+                            <h3 class="box-title" th:text="#{message.title}">List of Roles</h3>
                             <div class="box-tools">
                                 <div class="input-group" style="width: 150px;">
                                     <a class="btn btn-sm btn-default" th:href="@{/roles/new}"><i
@@ -27,9 +27,9 @@
                             <table class="table table-hover">
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th th:text="#{message.roles.name}">Name</th>
-                                    <th th:text="#{message.roles.description}">Description</th>
-                                    <th th:text="#{message.roles.edit}">Edit</th>
+                                    <th th:text="#{message.name}">Name</th>
+                                    <th th:text="#{message.description}">Description</th>
+                                    <th th:text="#{message.edit}">Edit</th>
 
                                 </tr>
                                 <!--/*@thymesVar id="roles" type="java.util.List<com.revenat.jcart.entities.Role>"*/-->
@@ -40,7 +40,7 @@
                                     <td th:text="${role.name}">Role Name</td>
                                     <td th:text="${role.description}">Role Description</td>
                                     <td><a th:href="@{/roles/{id}(id=${role.id})}" class="btn btn-sm btn-default">
-                                        <i class="fa fa-edit"></i>Edit
+                                        <i class="fa fa-edit"></i><span th:text="#{message.edit}">Edit</span>
                                     </a></td>
                                 </tr>
 

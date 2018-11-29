@@ -3,6 +3,8 @@ package com.revenat.jcart.admin.config;
 import com.revenat.jcart.admin.security.PostAuthorizationFilter;
 import com.revenat.jcart.admin.web.converters.RoleCommandToRoleConverter;
 import com.revenat.jcart.admin.web.converters.RoleToRoleCommandConverter;
+import com.revenat.jcart.admin.web.converters.UserCommandToUserConverter;
+import com.revenat.jcart.admin.web.converters.UserToUserCommandConverter;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -179,5 +181,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         super.addFormatters(registry);
         registry.addConverter(new RoleToRoleCommandConverter());
         registry.addConverter(new RoleCommandToRoleConverter());
+        registry.addConverter(new UserToUserCommandConverter());
+        registry.addConverter(new UserCommandToUserConverter());
     }
 }

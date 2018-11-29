@@ -9,6 +9,9 @@ public class MessageCodes {
     public static final String INFO_USER_PASS_UPDATED_SUCCESS = "info.password_update_success";
     public static final String INFO_ROLE_CREATED_SUCCESSFULLY = "info.role_created_successfully";
     public static final String INFO_ROLE_UPDATED_SUCCESSFULLY = "info.role_updated_successfully";
+    public static final String INFO_USER_CREATED_SUCCESSFULLY = "info.user_created_successfully";
+    public static final String INFO_USER_UPDATED_SUCCESSFULLY = "info.user_updated_successfully";
+    public static final String ERROR_EXISTS = "error.exists";
 
     private MessageCodes() {}
 }

@@ -41,8 +41,25 @@ public class AuthenticatedUser extends org.springframework.security.core.userdet
             }
         }
         String[] roleNames = new String[roleAndPermissions.size()];
-        Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(roleAndPermissions.toArray(roleNames));
 
-        return authorities;
+        return AuthorityUtils.createAuthorityList(roleAndPermissions.toArray(roleNames));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        AuthenticatedUser that = (AuthenticatedUser) o;
+
+        return user != null ? user.equals(that.user) : that.user == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        return result;
     }
 }

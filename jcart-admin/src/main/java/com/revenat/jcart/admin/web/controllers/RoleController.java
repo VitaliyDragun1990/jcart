@@ -59,7 +59,7 @@ public class RoleController extends JCartAdminBaseController {
 
     @RequestMapping(value = "/roles/new", method = RequestMethod.GET)
     public String createRoleForm(Model model) {
-        Role role = new Role();
+        RoleCommand role = new RoleCommand();
         model.addAttribute("role", role);
 
         return VIEW_PREFIX + "create_role";
@@ -110,7 +110,7 @@ public class RoleController extends JCartAdminBaseController {
     /**
      * This method is needed in order to get properly indexed list of role's permissions according to all permissions
      * we have in the system to correctly display them in the Thymeleaf view as checkboxes initially selected only those
-     * permissions that given role gave. This is due to usage of indexed property binding {@code *{permissions[__${rowStat.index}__].id}}
+     * permissions which given role have. This is due to usage of indexed property binding {@code *{permissions[__${rowStat.index}__].id}}
      * the role permission objects index should match with the all List objects.
      * */
     private List<Permission> getAssignedPermissions(Role role) {

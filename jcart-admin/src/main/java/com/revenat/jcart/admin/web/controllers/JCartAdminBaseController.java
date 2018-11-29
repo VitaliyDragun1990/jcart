@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 public abstract class JCartAdminBaseController {
 
-    protected static final JCLogger LOGGER = JCLogger.getLogger(JCartAdminBaseController.class);
+    protected final JCLogger LOGGER = JCLogger.getLogger(getClass());
 
     @Autowired
     protected MessageSource messageSource;

@@ -15,11 +15,11 @@ public class AbstractEntity {
 
     @Convert(converter = InstantConverter.class)
     @Column(name = "created_on", nullable = false)
-    protected Instant createdOn;
+    private Instant createdOn;
 
     @Convert(converter = InstantConverter.class)
     @Column(name = "modified_on", nullable = false)
-    protected Instant modifiedOn;
+    private Instant modifiedOn;
 
     public AbstractEntity() {
 

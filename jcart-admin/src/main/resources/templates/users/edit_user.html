@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title th:text="#{title.edit_user}">Users - Edit</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+
+            <div class="box box-warning">
+
+                <div class="box-header with-border">
+                    <h3 class="box-title" th:text="#{message.edit_user.title}">Edit User</h3>
+                </div><!-- /.box-header -->
+
+                <div class="box-body">
+
+                    <!--/*@thymesVar id="user" type="com.revenat.jcart.admin.web.commands.UserCommand"*/-->
+                    <form role="form" th:action="@{/users/{id}(id=${user.id})}" th:object="${user}" method="post">
+                        <p th:if="${#fields.hasErrors('global')}" th:errors="*{global}" th:class="text-red">Incorrect data</p>
+
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label th:text="#{label.name}">Name</label>
+                            <input type="text" class="form-control" name="name" th:field="*{name}" readonly="readonly"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label th:text="#{label.email}">Email</label>
+                            <input type="text" class="form-control" name="email" th:field="*{email}" readonly="readonly"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label th:text="#{label.roles}">Roles</label>
+                            <div>
+                                <!--/*@thymesVar id="rolesList" type="java.util.List<com.revenat.jcart.entities.Role>"*/-->
+                                <p th:each="role,rowStat : ${rolesList}">
+                                    <input type="checkbox" th:field="*{roles[__${rowStat.index}__].id}" th:value="${role.id}" />
+                                    <label th:text="${role.name}">Role</label>
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary" th:text="#{label.submit}">Submit</button>
+                        </div>
+
+                    </form>
+
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+
+    </body>
+</html>

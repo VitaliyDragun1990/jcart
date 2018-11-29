@@ -41,7 +41,7 @@
 
                         <!-- permissions -->
                         <div class="form-group">
-                            <label>Permissions</label>
+                            <label th:text="#{label.permissions}">Permissions</label>
                             <div>
                                 <!--/*@thymesVar id="permissionsList" type="java.util.List<com.revenat.jcart.entities.Permission>"*/-->
                                 <p th:each="permission,rowStat : ${permissionsList}">
