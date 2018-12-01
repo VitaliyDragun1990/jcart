@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title th:text="#{title.categories}">Categories</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title" th:text="#{message.categories.title}">List of Categories</h3>
+                            <div class="box-tools">
+                                <div class="input-group" style="width: 150px;">
+                                    <a class="btn btn-sm btn-default" th:href="@{/categories/new}">
+                                        <i class="fa fa-plus-circle"></i> <span th:text="#{label.categories.newCategory}">New Category</span></a>
+                                </div>
+                            </div>
+                        </div><!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th th:text="#{message.name}">Name</th>
+                                    <th th:text="#{message.description}">Description</th>
+                                    <th th:text="#{message.edit}">Edit</th>
+                                </tr>
+                                <!--/*@thymesVar id="categories" type="java.util.List<com.revenat.jcart.entities.Category>"*/-->
+                                <tr th:each="cat,iterStat : ${categories}">
+                                    <td th:text="${iterStat.count}">1</td>
+                                    <td th:text="${cat.name}">Category Name</td>
+                                    <td th:text="${cat.description}">Category Description</td>
+                                    <td><a th:href="@{/categories/{id}(id=${cat.id})}" class="btn btn-sm btn-default">
+                                        <i class="fa fa-edit"></i> <span th:text="#{message.edit}">Edit</span></a>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div><!-- /.box-body -->
+
+                    </div><!-- /.box -->
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>

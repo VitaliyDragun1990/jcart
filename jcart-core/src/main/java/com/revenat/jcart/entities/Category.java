@@ -4,12 +4,14 @@ import com.revenat.jcart.base.AbstractEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "categories")
-public class Category extends AbstractEntity {
+public class Category extends AbstractEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false, unique = true)
     @NotEmpty

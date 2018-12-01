@@ -11,6 +11,8 @@ public class MessageCodes {
     public static final String INFO_ROLE_UPDATED_SUCCESSFULLY = "info.role_updated_successfully";
     public static final String INFO_USER_CREATED_SUCCESSFULLY = "info.user_created_successfully";
     public static final String INFO_USER_UPDATED_SUCCESSFULLY = "info.user_updated_successfully";
+    public static final String INFO_CATEGORY_CREATED_SUCCESSFULLY = "info.category_created_successfully";
+    public static final String INFO_CATEGORY_UPDATED_SUCCESSFULLY = "info.category_updated_successfully";
     public static final String ERROR_EXISTS = "error.exists";
 
     private MessageCodes() {}

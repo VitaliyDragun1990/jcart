@@ -18,9 +18,6 @@ public class UserCommand {
 
     private List<Role> roles;
 
-    public UserCommand() {
-    }
-
     public Integer getId() {
         return id;
     }

@@ -1,12 +1,8 @@
 package com.revenat.jcart.admin.web.commands;
 
-import com.revenat.jcart.entities.Permission;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class RoleCommand {
+public class CategoryCommand {
 
     private Integer id;
 
@@ -15,7 +11,7 @@ public class RoleCommand {
 
     private String description;
 
-    private List<Permission> permissions = new ArrayList<>();
+    private Integer displayOrder;
 
     public Integer getId() {
         return id;
@@ -41,12 +37,12 @@ public class RoleCommand {
         this.description = description;
     }
 
-    public List<Permission> getPermissions() {
-        return permissions;
+    public Integer getDisplayOrder() {
+        return displayOrder;
     }
 
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
     }
 
     @Override
@@ -54,9 +50,9 @@ public class RoleCommand {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RoleCommand roleCommand = (RoleCommand) o;
+        CategoryCommand that = (CategoryCommand) o;
 
-        return id != null ? id.equals(roleCommand.id) : roleCommand.id == null;
+        return id != null ? id.equals(that.id) : that.id == null;
     }
 
     @Override
@@ -66,11 +62,10 @@ public class RoleCommand {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("RoleDTO{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "CategoryCommand{" + "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", displayOrder=" + displayOrder +
+                '}';
     }
 }
