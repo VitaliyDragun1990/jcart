@@ -43,7 +43,7 @@
                         <div class="form-group">
                             <label th:text="#{label.permissions}">Permissions</label>
                             <div>
-                                <!--/*@thymesVar id="permissionsList" type="java.util.List<com.revenat.jcart.entities.Permission>"*/-->
+                                <!--/*@thymesVar id="permissionsList" type="java.util.List<com.revenat.jcart.core.entities.Permission>"*/-->
                                 <p th:each="permission,rowStat : ${permissionsList}">
                                     <input type="checkbox" th:field="*{permissions[__${rowStat.index}__].id}" th:value="${permission.id}" />
                                     <label th:text="${permission.name}">Permission</label>

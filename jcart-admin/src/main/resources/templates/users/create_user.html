@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <label th:text="#{label.roles}">Roles</label>
                             <div>
-                                <!--/*@thymesVar id="rolesList" type="java.util.List<com.revenat.jcart.entities.Role>"*/-->
+                                <!--/*@thymesVar id="rolesList" type="java.util.List<com.revenat.jcart.core.entities.Role>"*/-->
                                 <p th:each="role,rowStat : ${rolesList}">
                                     <input type="checkbox" th:field="*{roles[__${rowStat.index}__].id}" th:value="${role.id}" />
                                     <label th:text="${role.name}">Role</label>

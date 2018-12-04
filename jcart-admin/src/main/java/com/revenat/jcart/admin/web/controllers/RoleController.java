@@ -2,9 +2,10 @@ package com.revenat.jcart.admin.web.controllers;
 
 import com.revenat.jcart.admin.security.SecurityUtil;
 import com.revenat.jcart.admin.web.commands.RoleCommand;
-import com.revenat.jcart.entities.Permission;
-import com.revenat.jcart.entities.Role;
-import com.revenat.jcart.security.SecurityService;
+import com.revenat.jcart.core.entities.Permission;
+import com.revenat.jcart.core.entities.Role;
+import com.revenat.jcart.core.exceptions.NotFoundException;
+import com.revenat.jcart.core.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.access.annotation.Secured;
@@ -83,6 +84,9 @@ public class RoleController extends JCartAdminBaseController {
     @RequestMapping(value = "/roles/{id}", method = RequestMethod.GET)
     public String editRoleForm(@PathVariable("id") Integer id, Model model) {
         Role role = securityService.getRoleById(id);
+        if (role == null) {
+            throw new NotFoundException(Role.class, id);
+        }
 
         List<Permission> assignedPermissions = getAssignedPermissions(role);
 

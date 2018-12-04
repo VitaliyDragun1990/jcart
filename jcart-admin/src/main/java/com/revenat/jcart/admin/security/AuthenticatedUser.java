@@ -1,9 +1,9 @@
 package com.revenat.jcart.admin.security;
 
 
-import com.revenat.jcart.entities.Permission;
-import com.revenat.jcart.entities.Role;
-import com.revenat.jcart.entities.User;
+import com.revenat.jcart.core.entities.Permission;
+import com.revenat.jcart.core.entities.Role;
+import com.revenat.jcart.core.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 

@@ -61,27 +61,7 @@ INSERT INTO products (id,cat_id,sku,name,description,image_url,price,disabled,cr
   (2,2,'P1002','Quilling Toy 2','Quilling Toy 2','2.jpg','490.00',false,now(),now()),
   (3,3,'P1003','Quilling Toy 3','Quilling Toy 3','3.jpg','400.00',false,now(),now()),
   (4,1,'P1004','Quilling Toy 4','Quilling Toy 4','4.jpg','430.00',false,now(),now()),
-  (5,2,'P1005','Quilling Toy 5','Quilling Toy 5','5.jpg','750.00',false,now(),now()),
-  (6,3,'P1006','Quilling Toy 6','Quilling Toy 6','6.jpg','350.00',false,now(),now()),
-  (7,1,'P1007','Quilling Toy 7','Quilling Toy 7','7.jpg','220.00',false,now(),now()),
-  (8,2,'P1008','Quilling Toy 8','Quilling Toy 8','8.jpg','120.00',false,now(),now()),
-  (9,3,'P1009','Quilling Toy 9','Quilling Toy 9','9.jpg','150.00',false,now(),now()),
-  (10,1,'P1010','Quilling Toy 10','Quilling Toy 10','10.jpg','460.00',false,now(),now()),
-  (11,2,'P1011','Quilling Toy 11','Quilling Toy 11','11.jpg','440.00',false,now(),now()),
-  (12,3,'P1012','Quilling Toy 12','Quilling Toy 12','12.jpg','450.00',false,now(),now()),
-  (13,1,'P1013','Quilling Toy 13','Quilling Toy 13','13.jpg','470.00',false,now(),now()),
-  (14,2,'P1014','Quilling Toy 14','Quilling Toy 14','14.jpg','250.00',false,now(),now()),
-  (15,3,'P1015','Quilling Toy 15','Quilling Toy 15','15.jpg','450.00',false,now(),now()),
-  (16,1,'P1016','Quilling Toy 16','Quilling Toy 16','16.jpg','150.00',false,now(),now()),
-  (17,2,'P1017','Quilling Toy 17','Quilling Toy 17','17.jpg','450.00',false,now(),now()),
-  (18,3,'P1018','Quilling Toy 18','Quilling Toy 18','18.jpg','450.00',false,now(),now()),
-  (19,1,'P1019','Quilling Toy 19','Quilling Toy 19','19.jpg','400.00',false,now(),now()),
-  (20,2,'P1020','Quilling Toy 20','Quilling Toy 20','20.jpg','450.00',false,now(),now()),
-  (21,3,'P1021','Quilling Toy 21','Quilling Toy 21','21.jpg','450.00',false,now(),now()),
-  (22,1,'P1022','Quilling Toy 22','Quilling Toy 22','22.jpg','550.00',false,now(),now()),
-  (23,2,'P1023','Quilling Toy 23','Quilling Toy 23','23.jpg','450.00',false,now(),now()),
-  (24,3,'P1024','Quilling Toy 24','Quilling Toy 24','24.jpg','450.00',false,now(),now()),
-  (25,1,'P1025','Quilling Toy 25','Quilling Toy 25','25.jpg','250.00',false,now(),now())
+  (5,2,'P1005','Quilling Toy 5','Quilling Toy 5','5.jpg','750.00',false,now(),now())
 ;
 
 INSERT INTO customers (id,firstname,lastname,email,phone,password, created_on, modified_on)

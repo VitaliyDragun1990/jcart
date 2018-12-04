@@ -1,7 +1,7 @@
 package com.revenat.jcart.admin.security;
 
-import com.revenat.jcart.entities.User;
-import com.revenat.jcart.security.SecurityService;
+import com.revenat.jcart.core.entities.User;
+import com.revenat.jcart.core.security.SecurityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

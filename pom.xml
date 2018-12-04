@@ -27,11 +27,14 @@
         </sonar.junit.reportPaths>
         <sonar.coverage.exclusions>
             **/jcart/base/*,**/jcart/entities/*,**/jcart/admin/web/commands/*Command.*,
-            **/*Exception.*,**/jcart/admin/config/*,
+            **/*Exception.*,**/jcart/admin/config/*,**/jcart/admin/web/models/*Form.*,
             **/jcart/admin/security/*User.*,**/jcart/admin/web/utils/MessageCodes.*,
             **/jcart/admin/security/SecurityUtil.*,
             **/*Config.*,**/*Logger.*,**/*Application.*
         </sonar.coverage.exclusions>
+        <sonar.cpd.exclusions>
+            **/jcart/admin/web/commands/*Command.*
+        </sonar.cpd.exclusions>
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     </properties>

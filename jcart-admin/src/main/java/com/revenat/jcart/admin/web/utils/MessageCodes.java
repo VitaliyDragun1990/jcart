@@ -13,6 +13,8 @@ public class MessageCodes {
     public static final String INFO_USER_UPDATED_SUCCESSFULLY = "info.user_updated_successfully";
     public static final String INFO_CATEGORY_CREATED_SUCCESSFULLY = "info.category_created_successfully";
     public static final String INFO_CATEGORY_UPDATED_SUCCESSFULLY = "info.category_updated_successfully";
+    public static final String INFO_PRODUCT_CREATED_SUCCESSFULLY = "info.product_created_successfully";
+    public static final String INFO_PRODUCT_UPDATED_SUCCESSFULLY = "info.product_updated_successfully";
     public static final String ERROR_EXISTS = "error.exists";
 
     private MessageCodes() {}

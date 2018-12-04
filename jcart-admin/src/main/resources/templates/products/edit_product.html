@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title th:text="#{title.edit_product}">Products - Edit</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+
+            <div class="box box-warning">
+
+                <div class="box-header with-border">
+                    <h3 class="box-title" th:text="#{message.edit_product_title}">Edit Product</h3>
+                </div><!-- /.box-header -->
+
+                <div class="box-body">
+                    <!--/*@thymesVar id="product" type="com.revenat.jcart.admin.web.models.ProductForm"*/-->
+                    <form role="form" th:action="@{/products/{id}(id=${product.id})}" th:object="${product}" method="post"
+                          enctype="multipart/form-data">
+                        <p th:if="${#fields.hasErrors('global')}" th:errors="*{global}" th:class="text-red">Incorrect data</p>
+                        <input type="hidden" th:field="*{id}"/>
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label th:text="#{label.name}">Name</label>
+                            <input type="text" class="form-control" name="name" th:field="*{name}" readonly="readonly"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label th:text="#{label.sku}">SKU</label>
+                            <input type="text" class="form-control" name="sku" th:field="*{sku}"  readonly="readonly"/>
+                        </div>
+
+                        <div class="form-group" th:classappend="${#fields.hasErrors('price')}? 'has-error'">
+                            <label th:text="#{label.price}">Price</label>
+                            <input type="text" class="form-control" name="price" th:field="*{price}"
+                                   placeholder="Enter Product Price" th:placeholder="#{placeholder.enter_product_price}"/>
+                            <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" th:class="text-red">Incorrect data</p>
+                        </div>
+
+                        <div class="form-group" th:classappend="${#fields.hasErrors('description')}? 'has-error'">
+                            <label th:text="#{label.description}">Description</label>
+                            <textarea class="form-control" rows="3" name="description" th:field="*{description}"
+                                      placeholder="Enter Product Description" th:placeholder="#{placeholder.enter_product_description}"></textarea>
+                            <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" th:class="text-red">Incorrect data</p>
+                        </div>
+
+                        <div class="form-group" th:classappend="${#fields.hasErrors('image')}? 'has-error'">
+                            <label for="image" th:text="#{label.image}">Image</label>
+                            <input type="file" class="form-control" name="image" th:field="*{image}"/>
+                            <p th:if="${#fields.hasErrors('image')}" th:errors="*{image}" th:class="text-red">Incorrect data</p>
+                            <p class="help-block" th:text="#{label.select_image}">Select JPG Image</p>
+                            <p>
+                                <img alt="" src="image.jpg" th:src="@{'/products/images/{imageUrl}.jpg'(imageUrl=${product.id})}" height="200" width="250"/>
+                            </p>
+                        </div>
+
+                        <div class="form-group" th:classappend="${#fields.hasErrors('categoryId')}? 'has-error'">
+                            <label th:text="#{label.category}">Category</label>
+                            <div>
+                                <select class="form-control" th:field="*{categoryId}">
+                                    <!--/*@thymesVar id="categoriesList" type="java.util.List<com.revenat.jcart.core.entities.Category>"*/-->
+                                    <option th:each="cat : ${categoriesList}"
+                                            th:value="${cat.id}"
+                                            th:text="${cat.name}">Category</option>
+                                </select>
+                                <p th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}" th:class="text-red">Incorrect data</p>
+                            </div>
+
+                        </div>
+
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary"><span th:text="#{label.submit}">Submit</span></button>
+                        </div>
+
+                    </form>
+
+                </div><!-- /.box-body -->
+
+            </div><!-- /.box -->
+
+        </div>
+
+    </body>
+</html>

@@ -1,10 +1,11 @@
 package com.revenat.jcart.admin.web.controllers;
 
+import com.revenat.config.MockImageServiceConfig;
 import com.revenat.jcart.JCartAdminApplication;
-import com.revenat.jcart.admin.config.MockTemplateConfig;
-import com.revenat.jcart.common.services.EmailService;
-import com.revenat.jcart.entities.User;
-import com.revenat.jcart.security.SecurityService;
+import com.revenat.config.MockTemplateConfig;
+import com.revenat.jcart.core.common.services.EmailService;
+import com.revenat.jcart.core.entities.User;
+import com.revenat.jcart.core.security.SecurityService;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringApplicationConfiguration(classes = {JCartAdminApplication.class, MockTemplateConfig.class})
+@SpringApplicationConfiguration(classes = {JCartAdminApplication.class, MockTemplateConfig.class, MockImageServiceConfig.class})
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class UserAuthControllerTest {

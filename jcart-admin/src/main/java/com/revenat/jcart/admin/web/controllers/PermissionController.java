@@ -1,8 +1,8 @@
 package com.revenat.jcart.admin.web.controllers;
 
 import com.revenat.jcart.admin.security.SecurityUtil;
-import com.revenat.jcart.entities.Permission;
-import com.revenat.jcart.security.SecurityService;
+import com.revenat.jcart.core.entities.Permission;
+import com.revenat.jcart.core.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;

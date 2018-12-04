@@ -1,7 +1,7 @@
 package com.revenat.jcart.admin.security;
 
-import com.revenat.jcart.entities.User;
-import com.revenat.jcart.security.SecurityService;
+import com.revenat.jcart.core.entities.User;
+import com.revenat.jcart.core.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

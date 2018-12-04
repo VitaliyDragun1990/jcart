@@ -1,9 +1,9 @@
 package com.revenat.jcart.admin.web.validators;
 
 import com.revenat.jcart.admin.web.commands.RoleCommand;
-import com.revenat.jcart.entities.Permission;
-import com.revenat.jcart.entities.Role;
-import com.revenat.jcart.security.SecurityService;
+import com.revenat.jcart.core.entities.Permission;
+import com.revenat.jcart.core.entities.Role;
+import com.revenat.jcart.core.security.SecurityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

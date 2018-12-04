@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title th:text="#{title.appError}">Application Error</title>
+    </head>
+    <body>
+
+        <div layout:fragment="pageHeader">
+            <section class="content-header">
+                <h3><i class="fa fa-warning text-red"></i><span th:text="#{message.notFound.header}">
+                    An error occurred in the JCart Application!
+                </span></h3>
+            </section>
+        </div>
+
+        <div layout:fragment="content">
+            <div>
+                <h4>
+                    <!--/*@thymesVar id="exception" type="com.revenat.jcart.core.exceptions.JCartException"*/-->
+                    <span th:if="${exception != null}" th:text="${exception.message}">Exception message</span>
+                </h4>
+                <p>
+                    <span th:text="#{message.accessDenied.goHome}">
+                        You may want to go</span> <a href="#" th:href="@{/home}" th:text="#{message.accessDenied.home}">Home</a>
+                </p>
+            </div>
+        </div>
+
+    </body>
+</html>

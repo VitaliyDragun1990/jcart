@@ -1,8 +1,8 @@
 package com.revenat.jcart.admin.web.validators;
 
 import com.revenat.jcart.admin.web.commands.CategoryCommand;
-import com.revenat.jcart.catalog.CatalogService;
-import com.revenat.jcart.entities.Category;
+import com.revenat.jcart.core.catalog.CatalogService;
+import com.revenat.jcart.core.entities.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

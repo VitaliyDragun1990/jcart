@@ -1,9 +1,9 @@
 package com.revenat.jcart.admin.web.validators;
 
 import com.revenat.jcart.admin.web.commands.CategoryCommand;
-import com.revenat.jcart.catalog.CatalogService;
-import com.revenat.jcart.entities.Category;
-import com.revenat.jcart.entities.Product;
+import com.revenat.jcart.core.catalog.CatalogService;
+import com.revenat.jcart.core.entities.Category;
+import com.revenat.jcart.core.entities.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

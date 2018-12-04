@@ -1,7 +1,7 @@
 package com.revenat.jcart.admin.web.controllers;
 
 import com.revenat.jcart.JCartAdminApplication;
-import com.revenat.jcart.entities.Role;
+import com.revenat.jcart.core.entities.Role;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -128,6 +128,16 @@ public class UserControllerTest {
 
     @Test
     @WithUserDetails(TEST_USER)
+    public void testGet404WhenUserNotFound() throws Exception {
+        mockMvc.perform(get("/users/99"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(model().attributeExists("exception"))
+                .andExpect(view().name("error/404"));
+    }
+
+    @Test
+    @WithUserDetails(TEST_USER)
     public void testUpdateUser_OK() throws Exception {
         mockMvc.perform(post("/users/2")
                 .param("name", DUMMY_NAME)
@@ -155,13 +165,15 @@ public class UserControllerTest {
                 .andExpect(view().name("users/edit_user"));
     }
 
-    @Test(expected = NestedServletException.class)
+    @Test
     @WithUserDetails(TEST_USER)
     public void testUpdateUser_InvalidUserId() throws Exception {
         mockMvc.perform(post("/users/99")
                 .param("name", DUMMY_NAME)
                 .param("email", DUMMY_EMAIL)
                 .param("password", DUMMY_PASS))
-                .andDo(print());
+                .andDo(print())
+                .andExpect(status().is5xxServerError())
+                .andExpect(view().name("error/500"));
     }
 }

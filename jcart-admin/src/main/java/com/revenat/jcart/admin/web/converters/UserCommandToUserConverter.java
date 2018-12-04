@@ -1,7 +1,7 @@
 package com.revenat.jcart.admin.web.converters;
 
 import com.revenat.jcart.admin.web.commands.UserCommand;
-import com.revenat.jcart.entities.User;
+import com.revenat.jcart.core.entities.User;
 import org.springframework.core.convert.converter.Converter;
 
 public class UserCommandToUserConverter implements Converter<UserCommand, User> {

@@ -22,7 +22,7 @@
                                     <th th:text="#{message.name}">Name</th>
                                     <th th:text="#{message.description}">Description</th>
                                 </tr>
-                                <!--/*@thymesVar id="permissions" type="java.lang.List<com.revenat.jcart.entities.Permission>"*/-->
+                                <!--/*@thymesVar id="permissions" type="java.lang.List<com.revenat.jcart.core.entities.Permission>"*/-->
                                 <tr th:each="perm,iterStat : ${permissions}">
                                     <td th:text="${iterStat.count}">1</td>
                                     <td th:text="${perm.name}">Permission Name</td>

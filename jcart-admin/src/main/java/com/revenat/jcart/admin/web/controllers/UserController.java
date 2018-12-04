@@ -3,9 +3,10 @@ package com.revenat.jcart.admin.web.controllers;
 import com.revenat.jcart.admin.security.SecurityUtil;
 import com.revenat.jcart.admin.web.commands.UserCommand;
 import com.revenat.jcart.admin.web.validators.UserValidator;
-import com.revenat.jcart.entities.Role;
-import com.revenat.jcart.entities.User;
-import com.revenat.jcart.security.SecurityService;
+import com.revenat.jcart.core.entities.Role;
+import com.revenat.jcart.core.entities.User;
+import com.revenat.jcart.core.exceptions.NotFoundException;
+import com.revenat.jcart.core.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.access.annotation.Secured;
@@ -92,6 +93,9 @@ public class UserController extends JCartAdminBaseController {
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
     public String editUserForm(@PathVariable("id") Integer id, Model model) {
         User user = securityService.getUserById(id);
+        if (user == null) {
+            throw new NotFoundException(User.class, id);
+        }
 
         List<Role> assignedRoles = getAssignedRoles(user);
 

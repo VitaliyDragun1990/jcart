@@ -1,7 +1,7 @@
 package com.revenat.jcart.admin.web.converters;
 
 import com.revenat.jcart.admin.web.commands.RoleCommand;
-import com.revenat.jcart.entities.Role;
+import com.revenat.jcart.core.entities.Role;
 import org.springframework.core.convert.converter.Converter;
 
 public class RoleToRoleCommandConverter implements Converter<Role, RoleCommand> {

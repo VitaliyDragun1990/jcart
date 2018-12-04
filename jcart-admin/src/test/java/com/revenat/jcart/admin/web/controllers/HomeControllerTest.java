@@ -2,7 +2,7 @@ package com.revenat.jcart.admin.web.controllers;
 
 import com.revenat.jcart.JCartAdminApplication;
 import com.revenat.jcart.admin.security.AuthenticatedUser;
-import com.revenat.jcart.entities.User;
+import com.revenat.jcart.core.entities.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

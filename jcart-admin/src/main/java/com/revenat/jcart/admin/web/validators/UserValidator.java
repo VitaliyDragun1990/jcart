@@ -1,8 +1,8 @@
 package com.revenat.jcart.admin.web.validators;
 
 import com.revenat.jcart.admin.web.commands.UserCommand;
-import com.revenat.jcart.entities.User;
-import com.revenat.jcart.security.SecurityService;
+import com.revenat.jcart.core.entities.User;
+import com.revenat.jcart.core.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

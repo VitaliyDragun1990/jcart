@@ -1,6 +1,6 @@
 package com.revenat.jcart.admin.web.commands;
 
-import com.revenat.jcart.entities.Role;
+import com.revenat.jcart.core.entities.Role;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;

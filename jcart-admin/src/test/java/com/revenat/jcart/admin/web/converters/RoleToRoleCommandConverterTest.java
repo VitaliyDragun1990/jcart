@@ -1,8 +1,8 @@
 package com.revenat.jcart.admin.web.converters;
 
 import com.revenat.jcart.admin.web.commands.RoleCommand;
-import com.revenat.jcart.entities.Permission;
-import com.revenat.jcart.entities.Role;
+import com.revenat.jcart.core.entities.Permission;
+import com.revenat.jcart.core.entities.Role;
 import org.junit.Test;
 
 import java.util.ArrayList;

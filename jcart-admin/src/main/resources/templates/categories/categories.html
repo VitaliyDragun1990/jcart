@@ -29,7 +29,7 @@
                                     <th th:text="#{message.description}">Description</th>
                                     <th th:text="#{message.edit}">Edit</th>
                                 </tr>
-                                <!--/*@thymesVar id="categories" type="java.util.List<com.revenat.jcart.entities.Category>"*/-->
+                                <!--/*@thymesVar id="categories" type="java.util.List<com.revenat.jcart.core.entities.Category>"*/-->
                                 <tr th:each="cat,iterStat : ${categories}">
                                     <td th:text="${iterStat.count}">1</td>
                                     <td th:text="${cat.name}">Category Name</td>

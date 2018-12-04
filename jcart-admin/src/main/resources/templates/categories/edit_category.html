@@ -17,7 +17,7 @@
                 </div><!-- /.box-header -->
 
                 <div class="box-body">
-                    <!--/*@thymesVar id="category" type="com.revenat.jcart.entities.Category"*/-->
+                    <!--/*@thymesVar id="category" type="com.revenat.jcart.core.entities.Category"*/-->
                     <form role="form" th:action="@{/categories/{id}(id=${category.id})}" th:object="${category}" method="post">
                         <p th:if="${#fields.hasErrors('global')}" th:errors="*{global}" th:class="text-red">Incorrect data</p>
 

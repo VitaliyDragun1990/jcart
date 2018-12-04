@@ -112,6 +112,16 @@ public class CategoryControllerTest {
 
     @Test
     @WithUserDetails(TEST_USER)
+    public void testGet404WhenCategoryNotFound() throws Exception {
+        mockMvc.perform(get("/categories/99"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(model().attributeExists("exception"))
+                .andExpect(view().name("error/404"));
+    }
+
+    @Test
+    @WithUserDetails(TEST_USER)
     public void testUpdateCategory_OK() throws Exception {
         mockMvc.perform(post("/categories/1")
                 .param("name", "test")
@@ -123,13 +133,15 @@ public class CategoryControllerTest {
                 .andExpect(redirectedUrl("/categories"));
     }
 
-    @Test(expected = NestedServletException.class)
+    @Test
     @WithUserDetails(TEST_USER)
     public void testUpdateRole_InvalidRoleId() throws Exception {
         mockMvc.perform(post("/categories/99")
                 .param("name", "test")
                 .param("description", "")
                 .param("displayOrder", ""))
-                .andDo(print());
+                .andDo(print())
+                .andExpect(status().is5xxServerError())
+                .andExpect(view().name("error/500"));
     }
 }

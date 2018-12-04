@@ -32,7 +32,7 @@
                                     <th th:text="#{message.edit}">Edit</th>
 
                                 </tr>
-                                <!--/*@thymesVar id="roles" type="java.util.List<com.revenat.jcart.entities.Role>"*/-->
+                                <!--/*@thymesVar id="roles" type="java.util.List<com.revenat.jcart.core.entities.Role>"*/-->
                                 <tr th:each="role,iterStat : ${roles}">
                                     <td><a th:href="@{/roles/{id}(id=${role.id})}">
                                         <span th:text="${iterStat.count}">1</span>

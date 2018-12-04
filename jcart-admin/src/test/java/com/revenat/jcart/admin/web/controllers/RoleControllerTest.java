@@ -1,7 +1,7 @@
 package com.revenat.jcart.admin.web.controllers;
 
 import com.revenat.jcart.JCartAdminApplication;
-import com.revenat.jcart.entities.Permission;
+import com.revenat.jcart.core.entities.Permission;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -122,6 +122,16 @@ public class RoleControllerTest {
 
     @Test
     @WithUserDetails(TEST_USER)
+    public void testGet404WhenRoleNowFound() throws Exception {
+        mockMvc.perform(get("/roles/99"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(model().attributeExists("exception"))
+                .andExpect(view().name("error/404"));
+    }
+
+    @Test
+    @WithUserDetails(TEST_USER)
     public void testUpdateRole_OK() throws Exception {
         mockMvc.perform(post("/roles/3")
                 .param("name", "ROLE_SUPER_ADMIN")
@@ -147,12 +157,14 @@ public class RoleControllerTest {
 
     }
 
-    @Test(expected = NestedServletException.class)
+    @Test
     @WithUserDetails(TEST_USER)
     public void testUpdateRole_InvalidRoleId() throws Exception {
         mockMvc.perform(post("/roles/99")
                 .param("name", "ROLE_DUMMY")
                 .param("description", ""))
-                .andDo(print());
+                .andDo(print())
+                .andExpect(status().is5xxServerError())
+                .andExpect(view().name("error/500"));
     }
 }

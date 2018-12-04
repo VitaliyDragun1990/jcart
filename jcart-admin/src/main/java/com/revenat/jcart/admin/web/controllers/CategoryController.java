@@ -2,8 +2,9 @@ package com.revenat.jcart.admin.web.controllers;
 
 import com.revenat.jcart.admin.security.SecurityUtil;
 import com.revenat.jcart.admin.web.commands.CategoryCommand;
-import com.revenat.jcart.catalog.CatalogService;
-import com.revenat.jcart.entities.Category;
+import com.revenat.jcart.core.catalog.CatalogService;
+import com.revenat.jcart.core.entities.Category;
+import com.revenat.jcart.core.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.access.annotation.Secured;
@@ -74,6 +75,9 @@ public class CategoryController extends JCartAdminBaseController {
     @RequestMapping(value = "/categories/{id}", method = RequestMethod.GET)
     public String editCategoryForm(@PathVariable("id") Integer id, Model model) {
         Category category = catalogService.getCategoryById(id);
+        if (category == null) {
+            throw new NotFoundException(Category.class, id);
+        }
         CategoryCommand command = conversionService.convert(category, CategoryCommand.class);
         model.addAttribute("category", command);
 
