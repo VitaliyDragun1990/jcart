@@ -29,7 +29,9 @@
             **/jcart/base/*,**/jcart/entities/*,**/jcart/admin/web/commands/*Command.*,
             **/*Exception.*,**/jcart/admin/config/*,**/jcart/admin/web/models/*Form.*,
             **/jcart/admin/security/*User.*,**/jcart/admin/web/utils/MessageCodes.*,
-            **/jcart/admin/security/SecurityUtil.*,
+            **/jcart/admin/security/SecurityUtil.*,**/jcart/site/config/*,
+            **/jcart/site/security/*Config.*,**/jcart/site/security/*Customer.*,
+            **/jcart/site/web/models/*,
             **/*Config.*,**/*Logger.*,**/*Application.*
         </sonar.coverage.exclusions>
         <sonar.cpd.exclusions>

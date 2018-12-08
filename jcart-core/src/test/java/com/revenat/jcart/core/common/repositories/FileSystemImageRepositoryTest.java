@@ -17,7 +17,7 @@ public class FileSystemImageRepositoryTest {
     private static final byte[] IMAGE_CONTENT = new byte[] {1, 2, 0, 0, 0, 25};
 
     @Autowired
-    private ImageRepository repository;
+    private FileSystemImageRepository repository;
 
 
     @Test

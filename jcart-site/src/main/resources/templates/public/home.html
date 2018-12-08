@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title th:text="#{title.home}">Home</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+            <div class="single-product-area">
+                <div class="zigzag-bottom"></div>
+                <div class="container">
+
+                    <!--/*@thymesVar id="categories" type="com.revenat.jcart.core.entities.Category"*/-->
+                    <div class="row" th:each="cat : ${categories}">
+
+                        <div class="woocommerce-info">
+                            <a class="" th:href="@{/categories/{name}(name=${cat.name})}"
+                               th:text="${'Category: '+cat.name}">Category Name</a>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6" th:each="product : ${cat.products}">
+                            <!-- Product Card-->
+                            <div class="single-shop-product">
+                                <!--Product Image-->
+                                <div class="product-upper">
+                                    <img src="assets/img/products/2.jpg" alt=""
+                                         th:src="@{'/products/images/{id}.jpg'(id=${product.id})}"/>
+                                </div>
+                                <!--Product Details-->
+                                <h2>
+                                    <a href="#" th:href="@{/products/{sku}(sku=${product.sku})}"
+                                       th:text="${product.name}">Product Name</a>
+                                </h2>
+                                <!--Product Price-->
+                                <div class="product-carousel-price">
+                                    <ins th:text="${product.price}">$9.00</ins>
+                                </div>
+
+                                <!--Add to Cart-->
+                                <div class="product-option-shop">
+                                    <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70"
+                                       rel="nofollow" href="#"
+                                       th:onclick="'javascript:addItemToCart(\'' + ${product.sku} + '\');'">
+                                        <span th:text="#{label.addToCart}">Add to cart</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
