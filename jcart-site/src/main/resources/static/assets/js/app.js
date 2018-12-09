@@ -1,5 +1,9 @@
+var contextPath;
 jQuery(document).ready(function($){
+    contextPath = $('meta[name=context-path]').attr("content");
+    contextPath =contextPath.substr(0, contextPath.length - 1);
 
+    console.log('contextPath: ', contextPath);
 	/*
 	 $("#MyButton").bind("click", function() {
 		  fHardCodedFunction.apply(this, [someValue]);
@@ -12,20 +16,20 @@ jQuery(document).ready(function($){
 	function updateCartItemCount()
 	{
 		$.ajax ({ 
-	        url: '/cart/items/count', 
+	        url: contextPath + '/cart/items/count',
 	        type: "GET", 
 	        dataType: "json",
 	        contentType: "application/json",
 	        complete: function(responseData, status, xhttp){ 
-	        	$('#cart-item-count').text('('+responseData.responseJSON.count+')');
+	        	$('#cart-item-count').text('(' + responseData.responseJSON.count + ')');
 	        }
 	    });
 	}
 
 	function addItemToCart(sku)
 	{
-		$.ajax ({ 
-	        url: '/cart/items', 
+		$.ajax ({
+	        url: contextPath + '/cart/items',
 	        type: "POST", 
 	        dataType: "json",
 	        contentType: "application/json",
@@ -49,14 +53,14 @@ jQuery(document).ready(function($){
 	function updateCartItemQuantity(sku, quantity)
 	{
 		$.ajax ({ 
-	        url: '/cart/items', 
+	        url: contextPath + '/cart/items',
 	        type: "PUT", 
 	        dataType: "json",
 	        contentType: "application/json",
 	        data : '{ "product" :{ "sku":"'+ sku +'"},"quantity":"'+quantity+'"}',
 	        complete: function(responseData, status, xhttp){ 
 	        	updateCartItemCount();        	
-	        	location.href = '/cart' 
+	        	location.href = contextPath + '/cart'
 	        }
 	    });
 	}
@@ -64,13 +68,13 @@ jQuery(document).ready(function($){
 	function removeItemFromCart(sku)
 	{
 		$.ajax ({ 
-	        url: '/cart/items/'+sku, 
+	        url: contextPath + '/cart/items/'+sku,
 	        type: "DELETE", 
 	        dataType: "json",
 	        contentType: "application/json",
 	        complete: function(responseData, status, xhttp){ 
 	        	updateCartItemCount();
-	        	location.href = '/cart' 
+	        	location.href = contextPath + '/cart'
 	        }
 	    });
 	}

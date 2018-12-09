@@ -5,11 +5,13 @@ import com.revenat.jcart.core.entities.Customer;
 import com.revenat.jcart.core.entities.Payment;
 import com.revenat.jcart.core.entities.Product;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cart {
+public class Cart implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private List<LineItem> items;
     private Customer customer;
@@ -70,11 +72,9 @@ public class Cart {
     }
 
     public BigDecimal getTotalAmount() {
-        return items.stream().map(LineItem::getSubTotal).collect(
-                () -> new BigDecimal("0.0"),
-                (result, next) -> result = result.add(next),
-                (one, two) -> one = one.add(two)
-                );
+        return items.stream()
+                .map(LineItem::getSubTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Customer getCustomer() {

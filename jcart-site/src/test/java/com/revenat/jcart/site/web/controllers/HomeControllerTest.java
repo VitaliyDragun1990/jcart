@@ -1,5 +1,6 @@
 package com.revenat.jcart.site.web.controllers;
 
+import com.revenat.config.MockImageServiceConfig;
 import com.revenat.jcart.JCartSiteApplication;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,8 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(JCartSiteApplication.class)
+@SpringApplicationConfiguration({JCartSiteApplication.class, MockImageServiceConfig.class})
 @WebAppConfiguration
+@ActiveProfiles("test")
 public class HomeControllerTest {
 
     private static final String TEST_USER = "anna@gmail.com";

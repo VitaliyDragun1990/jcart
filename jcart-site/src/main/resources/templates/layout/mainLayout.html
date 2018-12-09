@@ -6,6 +6,7 @@
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="context-path" th:content="@{/}"/>
         <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">JCart</title>
 
         <!-- Google Fonts -->
@@ -148,6 +149,7 @@
             </div>
         </div>
 
+        <script th:inline="javascript"> var contextRoot = /*[[@{/}]]*/ ''; </script>
         <script src="https://code.jquery.com/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script th:src="@{'/assets/js/owl.carousel.min.js'}"></script>

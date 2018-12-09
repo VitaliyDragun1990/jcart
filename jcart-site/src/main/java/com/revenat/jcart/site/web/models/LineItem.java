@@ -2,9 +2,11 @@ package com.revenat.jcart.site.web.models;
 
 import com.revenat.jcart.core.entities.Product;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class LineItem {
+public class LineItem implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private Product product;
     private int quantity;
