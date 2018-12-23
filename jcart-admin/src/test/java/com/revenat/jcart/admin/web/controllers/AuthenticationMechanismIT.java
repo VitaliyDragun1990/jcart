@@ -21,7 +21,10 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 @SpringApplicationConfiguration(JCartAdminApplication.class)
 @WebAppConfiguration
 public class AuthenticationMechanismIT {
-    
+
+    private static final String AUTH_USER_EMAIL = "john@gmail.com";
+    private static final String AUTH_USER_PASSWORD = "green";
+
     @Autowired
     private WebApplicationContext context;
     
@@ -36,14 +39,14 @@ public class AuthenticationMechanismIT {
     }
 
     @Test
-    public void testUnauthenticatedInvalidCredentials() throws Exception {
+    public void formLogin_InvalidCredentials_UnauthenticatedResponse() throws Exception {
         mockMvc.perform(formLogin().user("invalid").password("invalid"))
                 .andExpect(unauthenticated());
     }
 
     @Test
-    public void testAuthenticatedValidCredentials() throws Exception {
-        mockMvc.perform(formLogin().user("john@gmail.com").password("green"))
+    public void formLogin_ValidCredentials_Authenticatedresponse() throws Exception {
+        mockMvc.perform(formLogin().user(AUTH_USER_EMAIL).password(AUTH_USER_PASSWORD))
                 .andExpect(authenticated());
     }
 }

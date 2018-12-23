@@ -16,28 +16,28 @@ public class InstantConverterTest {
     private InstantConverter converter = new InstantConverter();
 
     @Test
-    public void convertToDatabaseColumnPositive() {
+    public void convertToDatabaseColumn_NotNullArgument_TimestampReturned() {
         Timestamp column = converter.convertToDatabaseColumn(INSTANT);
 
         assertThat(column, equalTo(TIMESTAMP));
     }
 
     @Test
-    public void convertToDatabaseColumnNullWhenArgumentNull() {
+    public void convertToDatabaseColumn_NullArgument_NullReturned() {
         Timestamp column = converter.convertToDatabaseColumn(null);
 
         assertNull(column);
     }
 
     @Test
-    public void convertToEntityAttributePositive() {
+    public void convertToEntityAttribute_NotNullArgument_InstantReturned() {
         Instant attribute = converter.convertToEntityAttribute(TIMESTAMP);
 
         assertThat(attribute, equalTo(INSTANT));
     }
 
     @Test
-    public void convertToEntityAttributeNullWhenArgumentNull() {
+    public void convertToEntityAttribute_NullArgument_NullReturned() {
         Instant attribute = converter.convertToEntityAttribute(null);
 
         assertNull(attribute);

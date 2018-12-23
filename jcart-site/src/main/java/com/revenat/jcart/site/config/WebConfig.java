@@ -1,5 +1,7 @@
 package com.revenat.jcart.site.config;
 
+import com.revenat.jcart.site.web.converters.CustomerDTOToCustomerConverter;
+import com.revenat.jcart.site.web.converters.CustomerToCustomerDTOConverter;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -11,6 +13,7 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -38,14 +41,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         super.addViewControllers(registry);
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/register").setViewName("register");
+        registry.addViewController("/login").setViewName("public/login");
+        registry.addViewController("/register").setViewName("public/register");
         registry.addRedirectViewController("/", "/home");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        super.addFormatters(registry);
+        registry.addConverter(new CustomerToCustomerDTOConverter());
+        registry.addConverter(new CustomerDTOToCustomerConverter());
     }
 
     @Bean

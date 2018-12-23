@@ -19,6 +19,10 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleEmailServiceTest {
+    private static final String RECEIVER = "jack@gmail.com";
+    private static final String SENDER = "anna@gmail.com";
+    private static final String SUBJECT = "test";
+    private static final String SUPPORT_EMAIL = "admin@gmail.com";
 
     @Mock
     private JavaMailSender mailSender;
@@ -30,15 +34,13 @@ public class SimpleEmailServiceTest {
     @InjectMocks
     private SimpleEmailService emailService;
 
+
     @Test
-    public void sendEmailPositive() {
-        String to = "jack@gmail.com";
-        String from = "anna@gmail.com";
-        String subject = "test";
-        emailService.setSupportEmail("admin@gmail.com");
+    public void sendEmail_ValidData_EmailSent() {
+        emailService.setSupportEmail(SUPPORT_EMAIL);
         when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
 
-        emailService.sendEmail(to, subject, from);
+        emailService.sendEmail(RECEIVER, SUBJECT, SENDER);
 
         verify(mailSender, times(1)).createMimeMessage();
         verify(mailSender, times(1)).send(messageCaptor.capture());

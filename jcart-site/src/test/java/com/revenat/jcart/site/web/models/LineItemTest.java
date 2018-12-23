@@ -21,7 +21,7 @@ public class LineItemTest {
     }
 
     @Test
-    public void returnsPositiveSubtotalIfQuantityGreaterZero() {
+    public void getSubtotal_PositiveQuantityGiven_ReturnsPositiveSubtotal() {
         Integer quantity = 10;
         PRODUCT.setPrice(BigDecimal.TEN);
         lineItem.setProduct(PRODUCT);
@@ -34,7 +34,7 @@ public class LineItemTest {
     }
 
     @Test
-    public void returnsZeroSubtotalIfQuantityZero() {
+    public void getSubtotal_ZeroQuantityGiven_ReturnsZeroSubtotal() {
         Integer quantity = 0;
         PRODUCT.setPrice(BigDecimal.TEN);
         lineItem.setQuantity(quantity);
@@ -47,23 +47,23 @@ public class LineItemTest {
     }
 
     @Test
-    public void returnsTrueIfContainsProduct() {
+    public void contains_HasProductWithSkuEqualToGiven_ReturnsTrue() {
         PRODUCT.setSku("test");
         lineItem.setProduct(PRODUCT);
 
-        boolean result = lineItem.containsProduct(PRODUCT);
+        boolean result = lineItem.contains(PRODUCT);
 
         assertTrue(result);
     }
 
     @Test
-    public void returnsFalseIfNotContainsProduct() {
+    public void contains_HasProductWithDifferentSkuToGiven_ReturnsFalse() {
         PRODUCT.setSku("test");
         lineItem.setProduct(PRODUCT);
 
         Product dummy = new Product();
         dummy.setSku("dummy");
-        boolean result = lineItem.containsProduct(dummy);
+        boolean result = lineItem.contains(dummy);
 
         assertFalse(result);
     }

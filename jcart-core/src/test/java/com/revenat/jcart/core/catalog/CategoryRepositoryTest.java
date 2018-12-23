@@ -21,16 +21,18 @@ public class CategoryRepositoryTest {
     private CategoryRepository categoryRepository;
 
     @Test
-    public void getCategoryByName_Ok() {
-        Category flowers = categoryRepository.getByName("Flowers");
+    public void getByName_ValidCategoryNameGiven_CategoryReturned() {
+        String categoryName = "Flowers";
+        Category flowers = categoryRepository.getByName(categoryName);
 
-        assertThat(flowers.getName(), equalTo("Flowers"));
+        assertThat("Category name should be equal to those by which this category was found.",
+                flowers.getName(), equalTo(categoryName));
     }
 
     @Test
-    public void getCategoryByName_FailUnknownName() {
+    public void getByName_UnknownCategoryNameGiven_NullReturned() {
         Category unknown = categoryRepository.getByName("test");
 
-        assertNull(unknown);
+        assertNull("Should return null, if no category with given name.", unknown);
     }
 }

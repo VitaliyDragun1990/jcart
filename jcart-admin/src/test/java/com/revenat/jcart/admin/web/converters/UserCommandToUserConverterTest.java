@@ -5,33 +5,40 @@ import com.revenat.jcart.core.entities.Role;
 import com.revenat.jcart.core.entities.User;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
 
 public class UserCommandToUserConverterTest {
+    private static final int ID = 1;
+    private static final String NAME = "Jack";
+    private static final String EMAIL = "jack@gmail.com";
+    private static final String PASSWORD = "test";
 
     private UserCommandToUserConverter converter = new UserCommandToUserConverter();
 
     @Test
     public void convertUserCommandToUser() {
         Role role = new Role();
-        role.setId(1);
-        role.setName("ROLE_DUMMY");
-        UserCommand command = new UserCommand();
-        command.setId(1);
-        command.setName("Jack");
-        command.setEmail("jack@gmail.com");
-        command.setPassword("test");
-        command.setRoles(new ArrayList<Role>(){{add(role);}});
+        UserCommand command = createUserCommandWithRole(ID, NAME, EMAIL, PASSWORD, role);
 
         User user = converter.convert(command);
 
-        assertThat(user.getId(), equalTo(command.getId()));
-        assertThat(user.getName(), equalTo(command.getName()));
-        assertThat(user.getEmail(), equalTo(command.getEmail()));
-        assertThat(user.getPassword(), equalTo(command.getPassword()));
-        assertThat(user.getRoles(), equalTo(command.getRoles()));
+        assertThat(user.getId(), equalTo(ID));
+        assertThat(user.getName(), equalTo(NAME));
+        assertThat(user.getEmail(), equalTo(EMAIL));
+        assertThat(user.getPassword(), equalTo(PASSWORD));
+        assertThat(user.getRoles(), hasSize(1));
+    }
+
+    private UserCommand createUserCommandWithRole(Integer id, String name, String email, String password, Role role) {
+        UserCommand command = new UserCommand();
+        command.setId(id);
+        command.setName(name);
+        command.setEmail(email);
+        command.setPassword(password);
+        command.getRoles().add(role);
+
+        return command;
     }
 }

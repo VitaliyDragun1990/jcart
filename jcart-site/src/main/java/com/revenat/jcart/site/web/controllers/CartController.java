@@ -7,6 +7,7 @@ import com.revenat.jcart.site.web.models.Cart;
 import com.revenat.jcart.site.web.models.LineItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +49,9 @@ public class CartController extends JCartSiteBaseController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/cart/items", method = RequestMethod.POST,
             consumes = {"application/json", "application/json;charset=UTF-8"})
-    public void addToCart(@RequestBody Product product, HttpServletRequest request) {
+    public void addToCart(RequestEntity<Product> requestEntity, HttpServletRequest request) {
         Cart cart = getOrCreateCart(request);
+        Product product = requestEntity.getBody();
         Product productToAdd = catalogService.getProductBySku(product.getSku());
         if (productToAdd == null) {
             throw new NotFoundException("Product with SKU: " + product.getSku() + " can not be found.");

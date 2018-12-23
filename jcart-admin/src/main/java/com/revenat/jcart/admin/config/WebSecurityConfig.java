@@ -1,4 +1,4 @@
-package com.revenat.jcart.site.security;
+package com.revenat.jcart.admin.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,11 +15,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService customUserDetailService;
+    private UserDetailsService customUserDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -29,29 +29,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(customUserDetailService)
+                .userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/resources/**", "/webjars/**", "/assets/**").permitAll()
-                    .antMatchers("/", "/register", "/forgotPwd", "/resetPwd").permitAll()
-                    .antMatchers("/myAccount", "/checkout", "/orders").authenticated()
-                .and()
+                    .antMatchers("/", "/forgotPwd", "/resetPwd").permitAll()
+                    .anyRequest().authenticated()
+                    .and()
                 .formLogin()
                     .loginPage("/login")
                     .defaultSuccessUrl("/home")
                     .failureUrl("/login?error")
                     .permitAll()
-                .and()
+                    .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .permitAll()
-                .and()
-                .exceptionHandling().accessDeniedPage("/403")
-                .and().csrf().disable();
+                    .and()
+                .exceptionHandling().accessDeniedPage("/403");
     }
 }

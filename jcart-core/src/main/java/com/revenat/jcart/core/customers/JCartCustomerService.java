@@ -3,6 +3,7 @@ package com.revenat.jcart.core.customers;
 import com.revenat.jcart.core.entities.Customer;
 import com.revenat.jcart.core.entities.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Profile("!test")
 public class JCartCustomerService implements CustomerService {
 
     @Autowired

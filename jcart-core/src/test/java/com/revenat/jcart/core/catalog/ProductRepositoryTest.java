@@ -24,56 +24,60 @@ public class ProductRepositoryTest {
     private ProductRepository productRepository;
 
     @Test
-    public void getProductByName_Ok() {
+    public void fundByName_ValidNameGiven_ProductReturned() {
         String productName = "Quilling Toy 1";
 
         Product product = productRepository.findByName(productName);
 
-        assertThat(product.getName(), equalTo(productName));
+        assertThat("Product name should be equal to those by which this product was found.",
+                product.getName(), equalTo(productName));
     }
 
     @Test
-    public void getProductByName_FailUnknownName() {
+    public void findByName_UnknownNameGiven_NullReturned() {
         String unknownName = "test";
 
         Product product = productRepository.findByName(unknownName);
 
-        assertNull(product);
+        assertNull("Search by wrong name should return null.", product);
     }
 
     @Test
-    public void getProductBySku_Ok() {
+    public void findBySku_ValidSkuGiven_ProductReturned() {
         String productSku = "P1001";
 
         Product product = productRepository.findBySku(productSku);
 
-        assertThat(product.getSku(), equalTo(productSku));
+        assertThat("Product SKU should be equal to those by which this product was found.",
+                product.getSku(), equalTo(productSku));
     }
 
     @Test
-    public void getProductBySku_FailInvalidSku() {
+    public void findBySku_UnknownSkuGiven_NullReturned() {
         String invalidSku = "test";
 
         Product product = productRepository.findBySku(invalidSku);
 
-        assertNull(product);
+        assertNull("Search by wrong SKU should return null.", product);
     }
 
     @Test
-    public void searchProductByQuery_Ok() {
+    public void search_ValidQueryGiven_ProductListReturned() {
         String query = "%P100%";
 
         List<Product> products = productRepository.search(query);
 
-        assertThat(products, hasSize(5));
+        assertThat("Result list should contain all products compatible with given query.",
+                products, hasSize(5));
     }
 
     @Test
-    public void searchProductByQuery_FailNoResult() {
+    public void search_NoResultQueryGiven_EmptyListReturned() {
         String query = "%test%";
 
         List<Product> products = productRepository.search(query);
 
-        assertThat(products, hasSize(0));
+        assertThat("Result list should be empty if no products compatible with given query.",
+                products, hasSize(0));
     }
 }

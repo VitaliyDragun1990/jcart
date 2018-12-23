@@ -4,6 +4,7 @@ import com.revenat.jcart.core.entities.Category;
 import com.revenat.jcart.core.entities.Product;
 import com.revenat.jcart.core.exceptions.JCartException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Profile("!test")
 public class JCartCatalogService implements CatalogService {
 
     @Autowired

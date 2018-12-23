@@ -11,14 +11,12 @@ public class RestExceptionProcessorTest {
 
     private static final String MESSAGE = "test message";
 
-    private RestExceptionProcessor processor;
-
     @Test
-    public void handlesNotFoundException() {
-        processor = new RestExceptionProcessor();
+    public void handleNotFound_NotFoundExceptionGiven_ReturnsJsonError() {
+        RestExceptionProcessor exceptionProcessor = new RestExceptionProcessor();
         NotFoundException exception = new NotFoundException(MESSAGE);
 
-        JsonError jsonError = processor.handleNotFound(exception);
+        JsonError jsonError = exceptionProcessor.handleNotFound(exception);
 
         assertThat(jsonError.getError(), equalTo(MESSAGE));
     }

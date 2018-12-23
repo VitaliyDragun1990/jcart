@@ -5,6 +5,7 @@ import com.revenat.jcart.core.entities.Permission;
 import com.revenat.jcart.core.entities.Role;
 import com.revenat.jcart.core.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -18,6 +19,7 @@ import java.util.UUID;
  */
 @Service
 @Transactional
+@Profile("!test")
 public class JCartSecurityService implements SecurityService {
 
     private static final String INVALID_EMAIL_ADDRESS = "Invalid email address";

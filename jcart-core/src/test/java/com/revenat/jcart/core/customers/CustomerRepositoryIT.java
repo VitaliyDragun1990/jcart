@@ -23,44 +23,40 @@ import static org.junit.Assert.*;
 @IntegrationTest
 @SpringApplicationConfiguration({JCartCoreApplication.class})
 public class CustomerRepositoryIT {
+    private static final String USER_EMAIL_WITH_ORDERS = "anna@gmail.com";
+    private static final String UNREGISTERED_EMAIL = "dummy@gmail.com";
+    private static final String USER_EMAIL_WITHOUT_ORDERS = "jack@gmail.com";
 
     @Autowired
     private CustomerRepository customerRepository;
 
     @Test
-    public void findByEmail_PositiveWhenExists() {
-        String email = "anna@gmail.com";
+    public void findByEmail_RegisteredEmail_CustomerReturned() {
 
-        Customer anna = customerRepository.findByEmail(email);
+        Customer anna = customerRepository.findByEmail(USER_EMAIL_WITH_ORDERS);
 
-        assertNotNull(anna);
-        assertThat(anna, Matchers.hasProperty("email", equalTo(email)));
+        assertNotNull("Should not be null when searched with registered email.", anna);
+        assertThat(anna, Matchers.hasProperty("email", equalTo(USER_EMAIL_WITH_ORDERS)));
     }
 
     @Test
-    public void findByEmail_NullWhenNotExist() {
-        String email = "dummy@gmail.com";
+    public void findByEmail_UnknownEmail_NullReturned() {
+        Customer nullCustomer = customerRepository.findByEmail(UNREGISTERED_EMAIL);
 
-        Customer dummy = customerRepository.findByEmail(email);
-
-        assertNull(dummy);
+        assertNull("Should return null when searched with unregistered email.",nullCustomer);
     }
 
     @Test
     public void getCustomerOrders_PositiveWhenOrdersExist() {
-        String email = "anna@gmail.com";
+        List<Order> annaOrders = customerRepository.getCustomerOrders(USER_EMAIL_WITH_ORDERS);
 
-        List<Order> annaOrders = customerRepository.getCustomerOrders(email);
-
-        assertThat(annaOrders, hasSize(1));
+        assertThat("Should return all customer's orders.", annaOrders, hasSize(1));
     }
 
     @Test
     public void getCustomerOrders_EmptyListWhenNoOrders() {
-        String email = "jack@gmail.com";
+        List<Order> jackOrders = customerRepository.getCustomerOrders(USER_EMAIL_WITHOUT_ORDERS);
 
-        List<Order> jackOrders = customerRepository.getCustomerOrders(email);
-
-        assertThat(jackOrders, empty());
+        assertThat("Should be empty for customer with no orders.", jackOrders, empty());
     }
 }

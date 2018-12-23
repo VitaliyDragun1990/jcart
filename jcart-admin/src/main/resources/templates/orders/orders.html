@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title th:text="#{title.orders}">Orders</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title" th:text="#{label.list_of_orders}">List of Orders</h3>
+                        </div>
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th th:text="#{label.order_number}">Order Number</th>
+                                    <th th:text="#{label.customer_name}">Customer Name</th>
+                                    <th th:text="#{label.email}">Email</th>
+                                    <th th:text="#{label.edit}">Edit</th>
+
+                                </tr>
+                                <tr th:each="order,iterStat : ${orders}">
+                                    <td><span th:text="${iterStat.count}">1</span></td>
+                                    <td th:text="${order.orderNumber}">Order Number</td>
+                                    <td th:text="${order.customer.firstName}">Customer Name</td>
+                                    <td th:text="${order.customer.email}">Customer Email</td>
+                                    <td><a th:href="@{/orders/{orderNumber}(orderNumber=${order.orderNumber})}" class="btn btn-sm btn-default">
+                                        <i class="fa fa-edit"></i> <span th:text="#{label.edit}">Edit</span></a></td>
+                                </tr>
+
+                            </table>
+                        </div><!-- /.box-body -->
+
+                    </div><!-- /.box -->
+                </div>
+            </div>
+
+
+        </div>
+
+    </body>
+</html>

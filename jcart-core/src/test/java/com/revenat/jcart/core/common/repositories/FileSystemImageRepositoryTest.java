@@ -15,36 +15,50 @@ import static org.junit.Assert.*;
 @SpringApplicationConfiguration(classes = JCartCoreApplication.class)
 public class FileSystemImageRepositoryTest {
     private static final byte[] IMAGE_CONTENT = new byte[] {1, 2, 0, 0, 0, 25};
+    private static final byte[] EMPTY_CONTENT = new byte[0];
+    private static final String IMAGE_NAME = "dummy.jpg";
+    private static final String WRONG_IMAGE_NAME = "unknown.jpg";
+    private static final String WRONG_IMAGE_DIRECTORY = "/dummy/";
 
     @Autowired
     private FileSystemImageRepository repository;
 
 
     @Test
-    public void testSaveLoadImage_OK() {
-        repository.saveImage(IMAGE_CONTENT, "dummy.jpg");
+    public void saveImage_ContentPresent_ImageSaved() {
+        repository.saveImage(IMAGE_CONTENT, IMAGE_NAME);
 
-        byte[] imageFromDisk = repository.loadImage("dummy.jpg");
+        byte[] imageFromDisk = repository.loadImage(IMAGE_NAME);
 
-        assertThat(imageFromDisk, equalTo(IMAGE_CONTENT));
+        assertThat("Image content should be equal to that was saved.", imageFromDisk, equalTo(IMAGE_CONTENT));
     }
 
     @Test
-    public void testLoadImage_Fail_WrongName() {
-        byte[] imageFromDisk = repository.loadImage("unknown.jpg");
+    public void saveImage_EmptyContent_ImageNotSaved() {
+        String emptyImageName = "test.jpg";
+        repository.saveImage(EMPTY_CONTENT, emptyImageName);
 
-        assertThat(imageFromDisk.length, equalTo(0));
+        byte[] imageFromDisk = repository.loadImage(emptyImageName);
+
+        assertThat("Image content should be empty.", imageFromDisk.length, equalTo(0));
+    }
+
+    @Test
+    public void loadImage_WrongName_EmptyContentReturned() {
+        byte[] imageFromDisk = repository.loadImage(WRONG_IMAGE_NAME);
+
+        assertThat("For wrong image name content should be empty.", imageFromDisk.length, equalTo(0));
     }
 
     @Test(expected = JCartException.class)
-    public void testSaveImageToDisk_Fail_WrongDirectory() {
-        String oldImagesDir = ((FileSystemImageRepository)repository).getImagesDir();
-        ((FileSystemImageRepository)repository).setImagesDir("/dummy/");
+    public void saveImage_WrongImageDirectory_ExceptionThrown() {
+        String oldImagesDir = repository.getImagesDir();
+        repository.setImagesDir(WRONG_IMAGE_DIRECTORY);
 
         try {
-            repository.saveImage(IMAGE_CONTENT, "dummy.jpg");
+            repository.saveImage(IMAGE_CONTENT, IMAGE_NAME);
         } finally {
-            ((FileSystemImageRepository)repository).setImagesDir(oldImagesDir);
+            repository.setImagesDir(oldImagesDir);
         }
     }
 }

@@ -29,9 +29,10 @@ public class RoleValidatorTest {
     private RoleValidator validator;
 
     @Test
-    public void testValidate_OK() {
+    public void validate_UniqueName_NoErrors() {
         RoleCommand role = new RoleCommand();
         role.setName(ROLE_NAME);
+        when(securityService.getRoleByName(ROLE_NAME)).thenReturn(null);
 
         validator.validate(role, errors);
 
@@ -39,7 +40,7 @@ public class RoleValidatorTest {
     }
 
     @Test
-    public void testValidate_Error() {
+    public void validate_TakenName_ValidationError() {
         RoleCommand role = new RoleCommand();
         role.setName(ROLE_NAME);
         when(securityService.getRoleByName(ROLE_NAME)).thenReturn(new Role());
@@ -50,14 +51,14 @@ public class RoleValidatorTest {
     }
 
     @Test
-    public void testSupport_Ok() {
+    public void test_ValidClass_ReturnsTrue() {
         boolean result = validator.supports(RoleCommand.class);
 
         assertTrue(result);
     }
 
     @Test
-    public void testSupport_Fail() {
+    public void support_WrongClass_ReturnsFalse() {
         boolean result = validator.supports(Permission.class);
 
         assertFalse(result);

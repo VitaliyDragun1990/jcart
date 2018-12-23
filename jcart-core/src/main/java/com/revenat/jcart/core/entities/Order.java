@@ -8,6 +8,9 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class represents customer's order made in an online shop.
+ */
 @Entity
 @Table(name = "orders")
 public class Order extends AbstractEntity implements Serializable {

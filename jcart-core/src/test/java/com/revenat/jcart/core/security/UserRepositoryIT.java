@@ -16,25 +16,23 @@ import static org.junit.Assert.*;
 @IntegrationTest
 @SpringApplicationConfiguration(classes = JCartCoreApplication.class)
 public class UserRepositoryIT {
+    private static final String VALID_EMAIL = "john@gmail.com";
+    private static final String UNKNOWN_EMAIL = "unknown@gmail.com";
 
     @Autowired
     private UserRepository userRepository;
 
     @Test
-    public void findByEmailPositiveWhenValidEmail() {
-        String email = "john@gmail.com";
-
-        User user = userRepository.findByEmail(email);
+    public void findByEmail_ValidEmailGiven_UserReturned() {
+        User user = userRepository.findByEmail(VALID_EMAIL);
 
         assertNotNull(user);
-        assertThat(user.getEmail(), equalTo(email));
+        assertThat(user.getEmail(), equalTo(VALID_EMAIL));
     }
 
     @Test
-    public void findByEmailNegativeWhenUnknownEmail() {
-        String unknownEmail = "unknown@gmail.com";
-
-        User user = userRepository.findByEmail(unknownEmail);
+    public void findByEmail_UnknownEmailGiven_NullReturned() {
+        User user = userRepository.findByEmail(UNKNOWN_EMAIL);
 
         assertNull(user);
     }

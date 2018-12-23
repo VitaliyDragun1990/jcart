@@ -15,13 +15,15 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(JCartAdminApplication.class)
 @WebAppConfiguration
 public class ErrorControllerTest {
+
+    private static final String AUTH_USER_EMAIL = "john@gmail.com";
 
     @Autowired
     private WebApplicationContext context;
@@ -37,16 +39,18 @@ public class ErrorControllerTest {
     }
 
     @Test
-    @WithUserDetails("john@gmail.com")
-    public void testAccessDeniedLoggedIn() throws Exception {
+    @WithUserDetails(AUTH_USER_EMAIL)
+    public void accessDenied_AuthenticatedUser_ShouldRenderAccessDeniedView() throws Exception {
         mockMvc.perform(get("/403"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error/accessDenied"));
     }
 
     @Test
-    public void testAccessDeniedNotLoggedIn() throws Exception {
+    public void accessDenied_NotAuthenticatedUser_ShouldRedirectToLoginPage() throws Exception {
         mockMvc.perform(get("/403"))
-                .andExpect(status().is3xxRedirection());
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
     }
 }

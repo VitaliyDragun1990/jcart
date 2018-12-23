@@ -12,7 +12,7 @@ public class MenuConfigurationTest {
     private static final String ROLES_URI = "/roles?id=12&permission=true";
 
     @Test
-    public void testMatchingMenu() {
+    public void getMatchingMenu_ShouldReturnMatchingMenuForEachUri() {
         String homeMenu = MenuConfiguration.getMatchingMenu(HOME_URI);
         String categoriesMenu = MenuConfiguration.getMatchingMenu(CATEGORIES_URI);
         String usersMenu = MenuConfiguration.getMatchingMenu(USERS_URI);

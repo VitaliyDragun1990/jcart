@@ -2,7 +2,6 @@ package com.revenat.jcart.admin.web.controllers;
 
 import com.revenat.jcart.JCartAdminApplication;
 import com.revenat.jcart.admin.security.AuthenticatedUser;
-import com.revenat.jcart.core.entities.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,9 +15,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -30,65 +27,54 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringApplicationConfiguration(JCartAdminApplication.class)
 @WebAppConfiguration
 public class HomeControllerTest {
+    private static final String AUTH_USER_EMAIL = "john@gmail.com";
 
-    private AuthenticatedUser dummyAuthentication;
-
+    private static final String HEADER_TITLE = "Home";
 
     @Autowired
     private WebApplicationContext context;
 
     private MockMvc mockMvc;
 
+    @Autowired
     private HomeController controller;
 
     @Before
-    public void setUpMockMvc() throws Exception {
-        controller = new HomeController();
+    public void setUpMockMvc() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
-//                .standaloneSetup(controller)
                 .apply(springSecurity())
                 .build();
     }
 
-    @Before
-    public void createDummyUser() {
-        User dummyUser = new User();
-        dummyUser.setName("Jack");
-        dummyUser.setEmail("dummy@gmail.com");
-        dummyUser.setPassword("password");
-        dummyAuthentication = new AuthenticatedUser(dummyUser);
+    @Test
+    public void getHeaderTitle_ShouldReturnCorrectHeaderTitle() {
+        assertThat(controller.getHeaderTitle(), equalTo(HEADER_TITLE));
     }
 
     @Test
-    @WithUserDetails("john@gmail.com")
-    public void testHome() throws Exception {
-        mockMvc.perform(get("/home")
-//                .with(user(dummyAuthentication))
-        )
+    @WithUserDetails(AUTH_USER_EMAIL)
+    public void home_ShouldRenderHomeView() throws Exception {
+        mockMvc.perform(get("/home"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("home"))
-                .andExpect(model().attributeExists("authenticatedUser"));
+                .andExpect(model().attributeExists("authenticatedUser"))
+                .andExpect(view().name("home"));
     }
 
     @Test
-    public void testGetHeaderTitle() {
-        controller = context.getBean("homeController", HomeController.class);
-
-        assertThat(controller.getHeaderTitle(), equalTo("Home"));
-    }
-
-    @Test
-    @WithUserDetails("john@gmail.com")
-    public void testGetCurrentUser() {
+    @WithUserDetails(AUTH_USER_EMAIL)
+    public void getCurrentUser_ShouldReturnInstanceOfCurrentlyLoggedInUser() {
         AuthenticatedUser authenticatedUser = HomeController.getCurrentUser();
+        assertNotNull("AuthenticatedUser can not be null.", authenticatedUser);
 
-        assertThat(authenticatedUser.getUsername(), equalTo("john@gmail.com"));
+        String username = authenticatedUser.getUsername();
+        assertNotNull("Authenticated user's username can not be null.", username);
+        assertThat(username, equalTo(AUTH_USER_EMAIL));
     }
 
     @Test
-    @WithUserDetails("john@gmail.com")
-    public void testIsLoggedIn_OK() {
+    @WithUserDetails(AUTH_USER_EMAIL)
+    public void isLoggedIn_ShouldReturnTrue() {
         boolean isLoggedIn = HomeController.isLoggedIn();
 
         assertTrue(isLoggedIn);

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title th:text="#{title.register}">Register</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+
+            <div class="single-product-area">
+                <div class="zigzag-bottom"></div>
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-md-offset-3 col-md-6">
+                            <!--/*@thymesVar id="customer" type="com.revenat.jcart.core.entities.Customer"*/-->
+                            <form id="login-form-wrap" th:action="@{/register}" th:object="${customer}" method="post">
+
+                                <div class="form-row form-row-first">
+                                    <label for="firstName"><span th:text="#{label.firstName}">FirstName</span> <span class="required">*</span></label>
+                                    <input type="text" th:field="*{firstName}" class="input-text" th:placeholder="#{placeholder.firstName}"/>
+                                    <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
+                                       th:errorclass="text-danger">Incorrect data</p>
+                                </div>
+
+                                <div class="form-row form-row-first">
+                                    <label for="lastName"><span th:text="#{label.lastName}">LastName</span> <span class="required">*</span>
+                                    </label>
+                                    <input type="text" th:field="*{lastName}" class="input-text" th:placeholder="#{placeholder.lastName}"/>
+                                    <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+                                       th:errorclass="text-danger">Incorrect data</p>
+                                </div>
+
+                                <div class="form-row form-row-first">
+                                    <label for="email"><span th:text="#{label.email}">Email</span> <span class="required">*</span>
+                                    </label>
+                                    <input type="email" th:field="*{email}" class="input-text" placeholder="Email"
+                                           th:placeholder="#{placeholder.email}"/>
+                                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                       th:errorclass="text-danger">Incorrect data</p>
+                                </div>
+
+                                <div class="form-row form-row-last">
+                                    <label for="password"><span th:text="#{label.password}">Password</span> <span class="required">*</span>
+                                    </label>
+                                    <input type="password" th:field="*{password}" class="input-text"
+                                           placeholder="Password" th:placeholder="#{placeholder.password}"/>
+                                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                                       th:errorclass="text-danger">Incorrect data</p>
+                                </div>
+
+                                <div class="form-row form-row-first">
+                                    <label for="phone"><span th:text="#{label.phone}">Phone</span> <span class="required">*</span>
+                                    </label>
+                                    <input type="text" th:field="*{phone}" class="input-text" th:placeholder="#{placeholder.phone}"/>
+                                    <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"
+                                       th:errorclass="text-danger">Incorrect data</p>
+                                </div>
+
+                                <div class="clear"></div>
+
+                                <div class="form-row">
+                                    <input type="submit" value="Register" th:value="#{label.register}" class="button"/>
+                                </div>
+
+                                <div>
+                                    <div th:if="${info!=null}" class="alert alert-warning alert-dismissable">
+                                        <p><i class="icon fa fa-warning"></i> <span th:text="${info}"></span></p>
+                                    </div>
+                                </div>
+
+                                <div class="lost_password">
+                                    <span th:text="#{message.existingCustomer}">Existing Customer?</span>
+                                    <a href="#" th:href="@{/login}" th:text="#{label.login}">Login</a>
+                                </div>
+
+                                <div class="clear"></div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>

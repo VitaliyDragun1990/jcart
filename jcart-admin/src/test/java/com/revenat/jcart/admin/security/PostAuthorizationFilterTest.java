@@ -16,6 +16,8 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PostAuthorizationFilterTest {
+    private static final String HOME_ATTRIBUTE = "Home";
+    private static final String URI = "/home";
 
     @Mock
     private HttpServletRequest mockRequest;
@@ -27,16 +29,16 @@ public class PostAuthorizationFilterTest {
     private PostAuthorizationFilter filter = new PostAuthorizationFilter();
 
     @Test
-    public void testAddCurrentMenuAttribute() throws ServletException, IOException {
-        when(mockRequest.getRequestURI()).thenReturn("/home");
+    public void doFilterInternal_MatchingUri_ShouldAddRequestAttribute() throws ServletException, IOException {
+        when(mockRequest.getRequestURI()).thenReturn(URI);
 
         filter.doFilterInternal(mockRequest, mockResponse, mockChain);
 
-        verify(mockRequest, times(1)).setAttribute("CURRENT_MENU", "Home");
+        verify(mockRequest, times(1)).setAttribute("CURRENT_MENU", HOME_ATTRIBUTE);
     }
 
     @Test
-    public void testNotAddMenuAttributeForIgnoreUris() throws ServletException, IOException {
+    public void doFilterInternal_IgnoredUri_ShouldNotAddRequestAttribute() throws ServletException, IOException {
         when(mockRequest.getRequestURI()).thenReturn(filter.IGNORE_URIS[0]);
 
         filter.doFilterInternal(mockRequest, mockResponse, mockChain);

@@ -3,6 +3,7 @@ package com.revenat.jcart.admin.web.commands;
 import com.revenat.jcart.core.entities.Role;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserCommand {
@@ -13,10 +14,9 @@ public class UserCommand {
     private String name;
     @NotEmpty
     private String email;
-    @NotEmpty
     private String password;
 
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
     public Integer getId() {
         return id;

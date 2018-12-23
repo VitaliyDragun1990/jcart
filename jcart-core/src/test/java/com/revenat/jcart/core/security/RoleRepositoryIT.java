@@ -15,25 +15,23 @@ import static org.junit.Assert.*;
 @IntegrationTest
 @SpringApplicationConfiguration(classes = JCartCoreApplication.class)
 public class RoleRepositoryIT {
+    private static final String CORRECT_ROLE_NAME = "ROLE_ADMIN";
+    private static final String WRONG_ROLE_NAME = "ROLE_IMPOSTOR";
 
     @Autowired
     private RoleRepository roleRepository;
 
     @Test
-    public void findByNamePositiveWhenExists() {
-        String roleName = "ROLE_ADMIN";
+    public void findByName_ValidName_RoleReturned() {
+        Role role = roleRepository.findByName(CORRECT_ROLE_NAME);
 
-        Role role = roleRepository.findByName(roleName);
-
-        assertNotNull(role);
+        assertNotNull("Should not be null when searched with correct name.", role);
     }
 
     @Test
-    public void findByNameNegativeWhenNotExists() {
-        String wrongName = "ROLE_IMPOSTOR";
+    public void findByName_InvalidName_NullReturned() {
+        Role role = roleRepository.findByName(WRONG_ROLE_NAME);
 
-        Role role = roleRepository.findByName(wrongName);
-
-        assertNull(role);
+        assertNull("Should be null when searched with wrong name.", role);
     }
 }

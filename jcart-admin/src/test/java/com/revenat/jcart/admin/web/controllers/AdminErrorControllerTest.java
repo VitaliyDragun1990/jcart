@@ -14,6 +14,12 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdminErrorControllerTest {
+    private static final String ERROR_PATH = "/error";
+    private static final String NOT_FOUND = "404";
+    private static final String SERVER_ERROR = "500";
+    private static final String XXX_ERROR = "555";
+    private static final String NOT_FOUND_VIEW = "error/404";
+    private static final String SERVER_ERROR_VIEW = "error/500";
 
     private AdminErrorController controller = new AdminErrorController();
 
@@ -21,34 +27,36 @@ public class AdminErrorControllerTest {
     private HttpServletRequest mockRequest;
 
     @Test
-    public void testGetErrorPath() {
+    public void getErrorPath_ShouldReturnErrorPath() {
         String errorPath = controller.getErrorPath();
 
-        assertThat(errorPath, equalTo("/error"));
+        assertThat(errorPath, equalTo(ERROR_PATH));
     }
 
     @Test
-    public void testReturns404PageWhenNotFound() {
-        when(mockRequest.getAttribute(ERROR_STATUS_CODE)).thenReturn("404");
+    public void handleError_NotFound_NotFoundViewReturned() {
+        when(mockRequest.getAttribute(ERROR_STATUS_CODE)).thenReturn(NOT_FOUND);
 
         String viewName = controller.handleError(mockRequest);
 
-        assertThat(viewName, equalTo("error/404"));
+        assertThat(viewName, equalTo(NOT_FOUND_VIEW));
     }
 
     @Test
-    public void testReturns500PageWhenServerError() {
-        when(mockRequest.getAttribute(ERROR_STATUS_CODE)).thenReturn("500");
+    public void handleError_ServerError_ServerErrorViewReturned() {
+        when(mockRequest.getAttribute(ERROR_STATUS_CODE)).thenReturn(SERVER_ERROR);
 
         String viewName = controller.handleError(mockRequest);
 
-        assertThat(viewName, equalTo("error/500"));
+        assertThat(viewName, equalTo(SERVER_ERROR_VIEW));
     }
 
     @Test
-    public void testReturns500PageWhenSomeOther() {
+    public void handleError_AnyOtherError_ServerErrorViewReturned() {
+        when(mockRequest.getAttribute(ERROR_STATUS_CODE)).thenReturn(XXX_ERROR);
+
         String viewName = controller.handleError(mockRequest);
 
-        assertThat(viewName, equalTo("error/500"));
+        assertThat(viewName, equalTo(SERVER_ERROR_VIEW));
     }
 }

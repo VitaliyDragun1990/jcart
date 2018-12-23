@@ -1,5 +1,6 @@
 package com.revenat.jcart.core.security;
 
+import com.revenat.jcart.core.entities.Permission;
 import com.revenat.jcart.core.exceptions.JCartException;
 import com.revenat.jcart.core.entities.Role;
 import com.revenat.jcart.core.entities.User;
@@ -7,22 +8,32 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SecurityServiceTest {
 
-    private static final String DUMMY_EMAIL = "dummy@gmail.com";
+    private static final String USER_EMAIL = "dummy@gmail.com";
     private static final String VALID_TOKEN = "valid_token";
     private static final String WRONG_TOKEN = "wrong_token";
     private static final String ROLE_NAME = "some_name";
     private static final String ROLE_DESCRIPTION = "some description";
+    private static final String PERMISSION_DESCRIPTION = "some description here";
+    private static final int ROLE_ID = 1;
+    private static final int PERMISSION_ID = 2;
+    private static final String PASSWORD = "test";
+    private static final int USER_ID = 1;
 
     @Mock
     private UserRepository userRepository;
@@ -31,190 +42,306 @@ public class SecurityServiceTest {
     @Mock
     private RoleRepository roleRepository;
 
-    private User dummyUser = new User();
-    @Spy
-    private Role dummyRole = new Role();
-
     @InjectMocks
     private JCartSecurityService securityService;
 
     @Test
-    public void findUserByEmail() {
-        securityService.findUserByEmail(DUMMY_EMAIL);
+    public void findUserByEmail_ValidEmailGiven_ShouldReturnUser() {
+        User user = UserBuilder.getBuilder().withEmail(USER_EMAIL).build();
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(user);
 
-        verify(userRepository, times(1)).findByEmail(DUMMY_EMAIL);
+        User returnedUser = securityService.findUserByEmail(USER_EMAIL);
+
+        verify(userRepository, times(1)).findByEmail(USER_EMAIL);
+        assertThat(returnedUser.getEmail(), equalTo(USER_EMAIL));
     }
 
     @Test
-    public void resetPasswordPositive() {
-        when(userRepository.findByEmail(DUMMY_EMAIL)).thenReturn(dummyUser);
+    public void findUserByEmail_InvalidEmailGiven_ShouldReturnNull() {
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(null);
 
-        String token = securityService.resetPassword(DUMMY_EMAIL);
+        User returnedUser = securityService.findUserByEmail(USER_EMAIL);
+
+        verify(userRepository, times(1)).findByEmail(USER_EMAIL);
+        assertThat("User should be null if searched with wrong email.", returnedUser, equalTo(null));
+    }
+
+    @Test
+    public void resetPassword_ValidEmail_PasswordResetTokenSet() {
+        User user = UserBuilder.getBuilder().build();
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(user);
+
+        String token = securityService.resetPassword(USER_EMAIL);
 
         assertNotNull(token);
-        assertThat(token, equalTo(dummyUser.getPasswordResetToken()));
+        assertThat(token, equalTo(user.getPasswordResetToken()));
+        verify(userRepository, timeout(1)).findByEmail(USER_EMAIL);
     }
 
     @Test(expected = JCartException.class)
-    public void resetPasswordNegativeWhenWrongEmail() {
-        securityService.resetPassword(DUMMY_EMAIL);
+    public void resetPassword_InvalidEmail_ExceptionThrown() {
+        when(userRepository.findByEmail(anyString())).thenReturn(null);
+
+        securityService.resetPassword(USER_EMAIL);
     }
 
     @Test(expected = JCartException.class)
-    public void updatePasswordNegativeWhenWrongEmail() {
-        securityService.resetPassword(DUMMY_EMAIL);
+    public void updatePassword_InvalidEmail_ExceptionThrown() {
+        when(userRepository.findByEmail(anyString())).thenReturn(null);
+
+        securityService.updatePassword(USER_EMAIL, VALID_TOKEN, PASSWORD);
     }
 
     @Test(expected = JCartException.class)
-    public void updatePasswordNegativeWhenTokenMismatch() {
-        dummyUser.setPasswordResetToken(VALID_TOKEN);
-        when(userRepository.findByEmail(DUMMY_EMAIL)).thenReturn(dummyUser);
+    public void updatePassword_InvalidToken_ExceptionThrown() {
+        User user = UserBuilder.getBuilder().withPasswordResetToken(VALID_TOKEN).build();
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(user);
 
-        securityService.updatePassword(DUMMY_EMAIL, WRONG_TOKEN, "new_password");
+        securityService.updatePassword(USER_EMAIL, WRONG_TOKEN, PASSWORD);
     }
 
     @Test
-    public void updatePasswordPositive() {
-        String new_password = "new_password";
-        dummyUser.setPasswordResetToken(VALID_TOKEN);
-        when(userRepository.findByEmail(DUMMY_EMAIL)).thenReturn(dummyUser);
+    public void updatePassword_ValidData_NewPasswordSet() {
+        User user = UserBuilder.getBuilder().withPasswordResetToken(VALID_TOKEN).build();
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(user);
 
-        securityService.updatePassword(DUMMY_EMAIL, VALID_TOKEN, new_password);
+        securityService.updatePassword(USER_EMAIL, VALID_TOKEN, PASSWORD);
 
-        assertThat(dummyUser.getPassword(), equalTo(new_password));
-        assertNull(dummyUser.getPasswordResetToken());
+        assertThat(user.getPassword(), equalTo(PASSWORD));
+        assertNull("Reset token should be null after password has been updated.",
+                user.getPasswordResetToken());
     }
 
     @Test
-    public void verifyPasswordTokenPositive() {
-        when(userRepository.findByEmail(DUMMY_EMAIL)).thenReturn(dummyUser);
-        dummyUser.setPasswordResetToken(VALID_TOKEN);
+    public void verifyPasswordToken_ValidToken_PositiveResult() {
+        User user = UserBuilder.getBuilder().withPasswordResetToken(VALID_TOKEN).build();
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(user);
 
-        boolean isValid = securityService.verifyPasswordResetToken(DUMMY_EMAIL, VALID_TOKEN);
+        boolean isValid = securityService.verifyPasswordResetToken(USER_EMAIL, VALID_TOKEN);
 
-        assertTrue(isValid);
+        assertTrue("Result should be true for valid token.", isValid);
     }
 
     @Test(expected = JCartException.class)
-    public void verifyPasswordTokenThrowsExceptionWhenWrongEmail() {
-        securityService.verifyPasswordResetToken(DUMMY_EMAIL, VALID_TOKEN);
+    public void verifyPasswordToken_WrongEmail_ExceptionThrown() {
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(null);
+
+        securityService.verifyPasswordResetToken(USER_EMAIL, VALID_TOKEN);
     }
 
     @Test
-    public void verifyPasswordTokenNegativeWhenTokenMismatch() {
-        when(userRepository.findByEmail(DUMMY_EMAIL)).thenReturn(dummyUser);
-        dummyUser.setPasswordResetToken(VALID_TOKEN);
+    public void verifyPasswordToken_InvalidTokenGiven_NegativeResult() {
+        User user = UserBuilder.getBuilder().withPasswordResetToken(VALID_TOKEN).build();
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(user);
 
-        boolean isValid = securityService.verifyPasswordResetToken(DUMMY_EMAIL, WRONG_TOKEN);
+        boolean isValid = securityService.verifyPasswordResetToken(USER_EMAIL, WRONG_TOKEN);
 
-        assertFalse(isValid);
+        assertFalse("Result should be false for invalid token.", isValid);
     }
 
     @Test
-    public void getAllPermissionsPositive() {
-        securityService.getAllPermissions();
+    public void getAllPermissions_ShouldReturnAllPermissions() {
+        when(permissionRepository.findAll()).thenReturn(new ArrayList<>());
 
+        List<Permission> permissions = securityService.getAllPermissions();
+
+        assertThat(permissions, hasSize(0));
         verify(permissionRepository, times(1)).findAll();
     }
 
     @Test
-    public void getAllRolesPositive() {
-        securityService.getAllRoles();
+    public void getAllRoles_ShouldReturnAllRoles() {
+        when(roleRepository.findAll()).thenReturn(new ArrayList<>());
 
+        List<Role> roles = securityService.getAllRoles();
+
+        assertThat(roles, hasSize(0));
         verify(roleRepository, times(1)).findAll();
     }
 
     @Test
-    public void getRoleByNamePositive() {
-        securityService.getRoleByName(ROLE_NAME);
+    public void getRoleByName_ValidName_ShouldReturnRole() {
+        Role role = RoleBuilder.getBuilder().withName(ROLE_NAME).build();
+        when(roleRepository.findByName(ROLE_NAME)).thenReturn(role);
 
+        Role roleByName = securityService.getRoleByName(ROLE_NAME);
+
+        assertThat(roleByName.getName(), equalTo(ROLE_NAME));
         verify(roleRepository, times(1)).findByName(ROLE_NAME);
     }
 
     @Test
-    public void createRolePositive() {
-        dummyRole.setName(ROLE_NAME);
-        securityService.createRole(dummyRole);
+    public void getRoleByName_WrongName_ShouldReturnNull() {
+        when(roleRepository.findByName(ROLE_NAME)).thenReturn(null);
 
+        Role roleByName = securityService.getRoleByName(ROLE_NAME);
+
+        assertThat(roleByName, equalTo(null));
         verify(roleRepository, times(1)).findByName(ROLE_NAME);
-        verify(dummyRole, times(1)).setPermissions(anyList());
-        verify(roleRepository, times(1)).save(dummyRole);
+    }
+
+    @Test
+    public void createRole_UniqueName_NewRoleCreated() {
+        Permission permission = PermissionBuilder.getBuilder()
+                .withId(PERMISSION_ID)
+                .withDescription(PERMISSION_DESCRIPTION)
+                .build();
+        Role role = RoleBuilder.getBuilder()
+                .withName(ROLE_NAME)
+                .withPermission(permission)
+                .build();
+        when(roleRepository.findByName(anyString())).thenReturn(null);
+        when(permissionRepository.findOne(PERMISSION_ID)).thenReturn(permission);
+        when(roleRepository.save(isA(Role.class))).thenAnswer(
+                (Answer<Role>) invocationOnMock -> (Role) invocationOnMock.getArguments()[0]);
+
+        Role newRole = securityService.createRole(role);
+
+        assertThat(newRole.getName(), equalTo(ROLE_NAME));
+        assertThat(newRole.getPermissions(), hasSize(1));
+        assertThat(newRole.getPermissions().get(0), hasProperty("description", equalTo(PERMISSION_DESCRIPTION)));
+        verify(roleRepository, times(1)).findByName(ROLE_NAME);
+        verify(roleRepository, times(1)).save(isA(Role.class));
     }
 
     @Test(expected = JCartException.class)
-    public void createRoleThrowsExceptionNameOccupied() {
-        dummyRole.setName(ROLE_NAME);
-        when(roleRepository.findByName(ROLE_NAME)).thenReturn(new Role());
+    public void createRole_OccupiedNameGiven_ExceptionThrown() {
+        Role role = RoleBuilder.getBuilder().withName(ROLE_NAME).build();
+        when(roleRepository.findByName(ROLE_NAME)).thenReturn(role);
 
-        securityService.createRole(dummyRole);
+        securityService.createRole(role);
     }
 
     @Test
-    public void updateRolePositive() {
-        Role updatedRole = new Role();
-        dummyRole.setId(1);
-        dummyRole.setDescription(ROLE_DESCRIPTION);
-        when(roleRepository.findOne(1)).thenReturn(updatedRole);
+    public void updateRole_RoleWithValidId_RoleUpdated() {
+        Permission permission = PermissionBuilder.getBuilder().withId(PERMISSION_ID).build();
+        Role persistedRole = RoleBuilder.getBuilder().build();
+        Role updateHolder = RoleBuilder.getBuilder()
+                .withId(ROLE_ID)
+                .withDescription(ROLE_DESCRIPTION)
+                .withPermission(permission)
+                .build();
+        when(roleRepository.findOne(ROLE_ID)).thenReturn(persistedRole);
+        when(permissionRepository.findOne(PERMISSION_ID)).thenReturn(permission);
+        when(roleRepository.save(isA(Role.class))).thenAnswer(
+                (Answer<Role>) invocationOnMock -> (Role) invocationOnMock.getArguments()[0]);
 
-        securityService.updateRole(dummyRole);
+        securityService.updateRole(updateHolder);
 
+        assertThat(persistedRole, hasProperty("description", equalTo(ROLE_DESCRIPTION)));
+        assertThat(persistedRole.getPermissions(), hasSize(1));
         verify(roleRepository, times(1)).findOne(1);
-        assertThat(updatedRole.getDescription(), equalTo(ROLE_DESCRIPTION));
-        verify(roleRepository, times(1)).save(updatedRole);
+        verify(roleRepository, times(1)).save(isA(Role.class));
+    }
+
+    @Test(expected = JCartException.class)
+    public void updateRole_RoleWithInvalidId_ExceptionThrown() {
+        Role role = RoleBuilder.getBuilder().withId(ROLE_ID).build();
+        when(roleRepository.findOne(ROLE_ID)).thenReturn(null);
+
+        securityService.updateRole(role);
     }
 
     @Test
-    public void getRoleByIdPositive() {
-        securityService.getRoleById(1);
+    public void getRoleById_CorrectId_ShouldReturnRole() {
+        Role role = RoleBuilder.getBuilder().withId(ROLE_ID).build();
+        when(roleRepository.findOne(ROLE_ID)).thenReturn(role);
 
-        verify(roleRepository, times(1)).findOne(1);
+        Role roleById = securityService.getRoleById(ROLE_ID);
+
+        assertThat(roleById.getId(), equalTo(ROLE_ID));
+        verify(roleRepository, times(1)).findOne(ROLE_ID);
     }
 
     @Test
-    public void getUserByIdPositive() {
-        securityService.getUserById(1);
+    public void getRoleById_WrongId_ShouldReturnNull() {
+        when(roleRepository.findOne(ROLE_ID)).thenReturn(null);
 
-        verify(userRepository, times(1)).findOne(1);
+        Role roleById = securityService.getRoleById(ROLE_ID);
+
+        assertThat(roleById, equalTo(null));
+        verify(roleRepository, times(1)).findOne(ROLE_ID);
     }
 
     @Test
-    public void getAllUsersPositive() {
-        securityService.getAllUsers();
+    public void getUserById_CorrectId_ShouldReturnUser() {
+        User user = UserBuilder.getBuilder().withId(USER_ID).build();
+        when(userRepository.findOne(USER_ID)).thenReturn(user);
 
+        User userById = securityService.getUserById(USER_ID);
+
+        assertThat(userById.getId(), equalTo(USER_ID));
+        verify(userRepository, times(1)).findOne(USER_ID);
+    }
+
+    @Test
+    public void getUserById_WrongId_ShouldReturnNull() {
+        when(userRepository.findOne(USER_ID)).thenReturn(null);
+
+        User userById = securityService.getUserById(USER_ID);
+
+        assertThat(userById, equalTo(null));
+        verify(userRepository, times(1)).findOne(USER_ID);
+    }
+
+    @Test
+    public void getAllUsers_ShouldReturnAllUsers() {
+        List<User> users = new ArrayList<>();
+        users.add(UserBuilder.getBuilder().build());
+        users.add(UserBuilder.getBuilder().build());
+        when(userRepository.findAll()).thenReturn(users);
+
+        List<User> allUsers = securityService.getAllUsers();
+
+        assertThat(allUsers, hasSize(2));
         verify(userRepository, times(1)).findAll();
     }
 
     @Test
-    public void createUserPositive() {
-        dummyUser.setRoles(null);
-        dummyUser.setEmail(DUMMY_EMAIL);
+    public void createUser_UniqueEmailGiven_UserCreated() {
+        Role role = RoleBuilder.getBuilder().withId(ROLE_ID).build();
+        User user = UserBuilder.getBuilder().withEmail(USER_EMAIL).withRole(role).build();
+        when(userRepository.findByEmail(anyString())).thenReturn(null);
+        when(userRepository.save(isA(User.class))).thenAnswer(
+                (Answer<User>) invocationOnMock -> (User) invocationOnMock.getArguments()[0]);
 
-        securityService.createUser(dummyUser);
+        User newUser = securityService.createUser(user);
 
-        verify(userRepository, times(1)).findByEmail(DUMMY_EMAIL);
-        verify(userRepository, times(1)).save(dummyUser);
-        assertNotNull(dummyUser.getRoles());
+        assertThat(newUser.getRoles(), hasSize(1));
+        verify(userRepository, times(1)).findByEmail(USER_EMAIL);
+        verify(userRepository, times(1)).save(isA(User.class));
     }
 
     @Test(expected = JCartException.class)
-    public void createUserThrowsExceptionEmailOccupied() {
-        dummyUser.setEmail(DUMMY_EMAIL);
-        when(userRepository.findByEmail(DUMMY_EMAIL)).thenReturn(new User());
+    public void createUser_EmailAlreadyTaken_ExceptionThrown() {
+        User user = UserBuilder.getBuilder().withEmail(USER_EMAIL).build();
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(user);
 
-        securityService.createUser(dummyUser);
+        securityService.createUser(user);
     }
 
     @Test
-    public void updateUserPositive() {
-        dummyUser.setId(1);
-        dummyUser.setRoles(null);
-        when(userRepository.findOne(1)).thenReturn(dummyUser);
+    public void updateUser_UserWithValidId_UserUpdated() {
+        Role role = RoleBuilder.getBuilder().withId(ROLE_ID).build();
+        User persistedUser = UserBuilder.getBuilder().withRole(role).build();
+        User updateHolder = UserBuilder.getBuilder().withId(USER_ID).build();
+        when(userRepository.findOne(USER_ID)).thenReturn(persistedUser);
+        when(userRepository.save(isA(User.class))).thenAnswer(
+                (Answer<User>) invocationOnMock -> (User) invocationOnMock.getArguments()[0]);
 
-        securityService.updateUser(dummyUser);
+        User updatedUser = securityService.updateUser(updateHolder);
 
-        verify(userRepository, times(1)).findOne(1);
-        verify(userRepository, times(1)).save(dummyUser);
+        assertThat(updatedUser.getRoles(), hasSize(0));
+        verify(userRepository, times(1)).findOne(USER_ID);
+        verify(userRepository, times(1)).save(isA(User.class));
         verifyNoMoreInteractions(userRepository);
-        assertNotNull(dummyUser.getRoles());
+    }
+
+    @Test(expected = JCartException.class)
+    public void updateUser_UserWithWrongId_ExceptionThrown() {
+        User user = UserBuilder.getBuilder().withId(USER_ID).build();
+        when(userRepository.findOne(USER_ID)).thenReturn(null);
+
+        securityService.updateUser(user);
     }
 }

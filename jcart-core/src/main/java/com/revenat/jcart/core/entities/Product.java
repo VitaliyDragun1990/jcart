@@ -22,8 +22,6 @@ public class Product extends AbstractEntity implements Serializable {
     @Column(nullable = false)
     private BigDecimal price = new BigDecimal("0.0");
 
-    private String imageUrl; // TODO: Delete this field from here and from test data fixture
-
     private boolean disabled;
 
     @ManyToOne
@@ -60,14 +58,6 @@ public class Product extends AbstractEntity implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public boolean isDisabled() {
@@ -113,7 +103,6 @@ public class Product extends AbstractEntity implements Serializable {
         sb.append(", name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", price=").append(price);
-        sb.append(", imageUrl='").append(imageUrl).append('\'');
         sb.append(", disabled=").append(disabled);
         sb.append(", id=").append(id);
         sb.append('}');

@@ -20,7 +20,6 @@ public class ProductForm {
     @NotNull
     @DecimalMin("0.1")
     private BigDecimal price = new BigDecimal("0.0");
-    private String imageUrl;
     private MultipartFile image;
     private boolean disabled;
     @NotNull
@@ -93,14 +92,6 @@ public class ProductForm {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public MultipartFile getImage() {

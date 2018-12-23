@@ -31,7 +31,7 @@ public class WebUtilsTest {
     }
 
     @Test
-    public void testGetURLWithContextPath() {
+    public void testGetURLWithContextPath_RequestGiven_UrlWithContextReturned() {
         String expectedUrl = SCHEMA + "://" + SERVER_NAME + ":" + SERVER_PORT + CONTEXT_PATH;
 
         String url = WebUtils.getURLWithContextPath(mockRequest);

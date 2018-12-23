@@ -73,15 +73,20 @@ public class UserAuthController extends JCartAdminBaseController {
     public String resetPassword(@RequestParam("email") String email, @RequestParam("token") String token,
                                 Model model, RedirectAttributes redirectAttributes) {
 
-        boolean valid = securityService.verifyPasswordResetToken(email, token);
-        if (valid) {
-            model.addAttribute(EMAIL, email);
-            model.addAttribute(TOKEN, token);
-            return VIEW_PREFIX + "resetPwd";
-        } else {
-            redirectAttributes.addFlashAttribute(MSG, getMessage(ERROR_INVALID_USER_PASS_RESET_REQUEST));
-            return "redirect:/login";
+        try {
+            boolean valid = securityService.verifyPasswordResetToken(email, token);
+            if (valid) {
+                model.addAttribute(EMAIL, email);
+                model.addAttribute(TOKEN, token);
+                return VIEW_PREFIX + "resetPwd";
+            } else {
+                redirectAttributes.addFlashAttribute(MSG, getMessage(ERROR_INVALID_USER_PASS_RESET_REQUEST));
+            }
+        } catch (JCartException e) {
+            LOGGER.error("Exception occurred while resetting user password.", e);
+            redirectAttributes.addFlashAttribute(MSG, e.getMessage());
         }
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "/resetPwd", method = RequestMethod.POST)
@@ -105,7 +110,7 @@ public class UserAuthController extends JCartAdminBaseController {
             redirectAttributes.addFlashAttribute(MSG, getMessage(INFO_USER_PASS_UPDATED_SUCCESS));
         } catch (JCartException e) {
             LOGGER.error("Error during updating user password.",e);
-            redirectAttributes.addFlashAttribute(MSG, getMessage(ERROR_INVALID_USER_PASS_RESET_REQUEST));
+            redirectAttributes.addFlashAttribute(MSG, e.getMessage());
         }
         return "redirect:/login";
     }

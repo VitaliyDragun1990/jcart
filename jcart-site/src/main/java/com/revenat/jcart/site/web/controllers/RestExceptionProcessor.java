@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ControllerAdvice
+@ControllerAdvice(assignableTypes = CartController.class)
 public class RestExceptionProcessor {
 
     @ExceptionHandler(NotFoundException.class)

@@ -5,30 +5,38 @@ import com.revenat.jcart.core.entities.Permission;
 import com.revenat.jcart.core.entities.Role;
 import org.junit.Test;
 
-import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.*;
 
 public class RoleToRoleCommandConverterTest {
+    private static final int ID = 1;
+    private static final String NAME = "ROLE_TEST";
+    private static final String DESCRIPTION = "Test";
 
     private RoleToRoleCommandConverter converter = new RoleToRoleCommandConverter();
 
     @Test
     public void convertRoleToRoleCommand() {
         Permission permission = new Permission();
-        permission.setId(1);
-        Role role = new Role();
-        role.setId(1);
-        role.setName("ROLE_TEST");
-        role.setDescription("Test");
-        role.setPermissions(new ArrayList<Permission>() {{add(permission);}});
+        Role role = createRoleWithPermission(ID, NAME, DESCRIPTION, permission);
 
         RoleCommand command = converter.convert(role);
 
-        assertThat(command.getId(), equalTo(role.getId()));
-        assertThat(command.getName(), equalTo(role.getName()));
-        assertThat(command.getDescription(), equalTo(role.getDescription()));
-        assertThat(command.getPermissions(), equalTo(role.getPermissions()));
+        assertThat(command.getId(), equalTo(ID));
+        assertThat(command.getName(), equalTo(NAME));
+        assertThat(command.getDescription(), equalTo(DESCRIPTION));
+        assertThat(command.getPermissions(), hasSize(1));
+    }
+
+    private Role createRoleWithPermission(Integer id, String name, String description, Permission permission) {
+        Role role = new Role();
+        role.setId(id);
+        role.setName(name);
+        role.setDescription(description);
+        role.getPermissions().add(permission);
+
+        return role;
     }
 }

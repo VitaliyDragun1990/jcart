@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/errorLayout">
+    <head>
+        <title th:text="#{title.server_error}">Internal Server Error</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+
+            <div class="single-product-area">
+                <div class="zigzag-bottom"></div>
+                <div class="container">
+                    <div class="row">
+
+                        <div class="woocommerce-info col-md-offset-2 col-md-8" th:if="${exception}">
+                            <h3 th:text="#{label.server_error}"> An error occurred in the JCart Application!</h3>
+                            <h4>
+                                <!--/*@thymesVar id="exception" type="com.revenat.jcart.core.exceptions.NotFoundException"*/-->
+                                <span th:if="${exception != null}" th:text="${exception.message}">Exception message</span>
+                            </h4>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>

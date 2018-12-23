@@ -39,7 +39,7 @@ public class LineItem implements Serializable {
         return product.getPrice().multiply(new BigDecimal(quantity));
     }
 
-    public boolean containsProduct(Product product) {
+    public boolean contains(Product product) {
         return this.product.getSku().equals(product.getSku());
     }
 

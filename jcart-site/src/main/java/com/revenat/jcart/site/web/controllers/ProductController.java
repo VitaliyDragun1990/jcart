@@ -3,6 +3,7 @@ package com.revenat.jcart.site.web.controllers;
 import com.revenat.jcart.core.catalog.CatalogService;
 import com.revenat.jcart.core.common.services.ImageService;
 import com.revenat.jcart.core.entities.Product;
+import com.revenat.jcart.core.exceptions.NotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,9 @@ public class ProductController extends JCartSiteBaseController {
     @RequestMapping(value = "/products/{sku}", method = RequestMethod.GET)
     public String getProductPage(@PathVariable("sku") String sku, Model model) {
         Product product = catalogService.getProductBySku(sku);
+        if (product == null) {
+            throw new NotFoundException("Product with SKU: " + sku + " can not be found.");
+        }
         model.addAttribute("product", product);
         return "public/product";
     }

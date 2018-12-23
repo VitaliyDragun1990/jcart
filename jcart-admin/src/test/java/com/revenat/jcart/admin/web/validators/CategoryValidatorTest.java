@@ -29,9 +29,10 @@ public class CategoryValidatorTest {
     private CategoryValidator validator;
 
     @Test
-    public void testValidate_Ok() {
+    public void validate_UniqueName_NoErrors() {
         CategoryCommand command = new CategoryCommand();
         command.setName(CATEGORY_NAME);
+        when(catalogService.getCategoryByName(CATEGORY_NAME)).thenReturn(null);
 
         validator.validate(command, errors);
 
@@ -39,7 +40,7 @@ public class CategoryValidatorTest {
     }
 
     @Test
-    public void testValidate_Error() {
+    public void validate_NameTaken_ValidationError() {
         CategoryCommand command = new CategoryCommand();
         command.setName(CATEGORY_NAME);
         when(catalogService.getCategoryByName(CATEGORY_NAME)).thenReturn(new Category());
@@ -50,14 +51,14 @@ public class CategoryValidatorTest {
     }
 
     @Test
-    public void testSupport_Ok() {
+    public void support_ValidClass_ReturnsTrue() {
         boolean result = validator.supports(CategoryCommand.class);
 
         assertTrue(result);
     }
 
     @Test
-    public void testSupport_Fail() {
+    public void support_WrongClass_ReturnFalse() {
         boolean result = validator.supports(Product.class);
 
         assertFalse(result);

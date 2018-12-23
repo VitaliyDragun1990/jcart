@@ -58,12 +58,12 @@ insert into categories(id, name, disp_order,disabled, created_on, modified_on) v
   (3,'Birds',3,false, NOW(), NOW())
 ;
 
-INSERT INTO products (id,cat_id,sku,name,description,image_url,price,disabled,created_on, modified_on) VALUES
-  (1,1,'P1001','Quilling Toy 1','Quilling Toy 1','1.jpg','430.00',false,now(),now()),
-  (2,2,'P1002','Quilling Toy 2','Quilling Toy 2','2.jpg','490.00',false,now(),now()),
-  (3,3,'P1003','Quilling Toy 3','Quilling Toy 3','3.jpg','400.00',false,now(),now()),
-  (4,1,'P1004','Quilling Toy 4','Quilling Toy 4','4.jpg','430.00',false,now(),now()),
-  (5,2,'P1005','Quilling Toy 5','Quilling Toy 5','5.jpg','750.00',false,now(),now())
+INSERT INTO products (id,cat_id,sku,name,description,price,disabled,created_on, modified_on) VALUES
+  (1,1,'P1001','Quilling Toy 1','Quilling Toy 1','430.00',false,now(),now()),
+  (2,2,'P1002','Quilling Toy 2','Quilling Toy 2','490.00',false,now(),now()),
+  (3,3,'P1003','Quilling Toy 3','Quilling Toy 3','400.00',false,now(),now()),
+  (4,1,'P1004','Quilling Toy 4','Quilling Toy 4','430.00',false,now(),now()),
+  (5,2,'P1005','Quilling Toy 5','Quilling Toy 5','750.00',false,now(),now())
 ;
 
 INSERT INTO customers (id,firstname,lastname,email,phone,password, created_on, modified_on)

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title th:text="#{title.edit_order}">Orders - Edit</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title" th:text="#{label.edit_order}">Edit Order</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div th:unless="${order}">
+                        <h2 th:text="#{info.no_order_found}">No order found</h2>
+                    </div>
+
+                    <form role="form" th:if="${order}"
+                          th:action="@{/orders/{orderNumber}(orderNumber=${order.orderNumber})}"
+                          th:object="${order}" method="post">
+
+                        <p th:if="${#fields.hasErrors('global')}" th:errors="*{global}"
+                           th:class="text-red">Incorrect data</p>
+
+                        <div>
+                            <h3>
+                                <span th:text="#{label.order_number}">Order Number</span> : <span th:text="${order.orderNumber}">Number</span>
+                            </h3>
+                            <h3 th:text="#{label.order_item_details}">Order Item Details</h3>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th th:text="#{label.name}">Name</th>
+                                    <th th:text="#{label.quantity}">Quantity</th>
+                                    <th th:text="#{label.cost}">Cost</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="item : ${order.items}">
+                                    <td th:text="${item.product.name}">product.name</td>
+                                    <td th:text="${item.quantity}">1</td>
+                                    <td th:text="${item.subTotal}">price</td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+
+                                <tr class="cart-subtotal">
+                                    <th th:text="#{label.order_subtotal}">Order Subtotal</th>
+                                    <td><span class="amount" th:text="${order.totalAmount}">£15.00</span>
+                                    </td>
+                                </tr>
+
+                                <tr class="shipping">
+                                    <th th:text="#{label.shipping}">Shipping and Handling</th>
+                                    <td th:text="#{message.free_shipping}">Free Shipping</td>
+                                </tr>
+
+                                <tr class="order-total">
+                                    <th th:text="#{label.order_total}">Order Total</th>
+                                    <td><strong><span class="amount"
+                                                      th:text="${order.totalAmount}">£15.00</span></strong></td>
+                                </tr>
+
+                                </tfoot>
+                            </table>
+                            <div>
+                                <label th:text="#{label.order_status}">Order Status</label>
+                                <select th:field="*{status}">
+                                <option
+                                        th:each="status: ${T(com.revenat.jcart.core.entities.OrderStatus).values()}"
+                                        th:value="${status}" th:text="${status}">Status
+                                </option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary" th:text="#{label.submit}">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+
+    </body>
+</html>

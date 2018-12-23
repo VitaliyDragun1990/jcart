@@ -14,6 +14,9 @@ public class AdminErrorController implements ErrorController {
     private static final JCLogger LOGGER = JCLogger.getLogger(AdminErrorController.class);
 
     private static final String VIEW_PATH = "error/";
+    private static final String ERROR_PATH = "/error";
+    private static final String NOT_FOUND = "404";
+    private static final String SERVER_ERROR = "500";
 
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request) {
@@ -24,17 +27,17 @@ public class AdminErrorController implements ErrorController {
             Integer statusCode = Integer.valueOf(status.toString());
 
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
-                return VIEW_PATH + "404";
+                return VIEW_PATH + NOT_FOUND;
             }
             else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                return VIEW_PATH + "500";
+                return VIEW_PATH + SERVER_ERROR;
             }
         }
-        return VIEW_PATH + "500";
+        return VIEW_PATH + SERVER_ERROR;
     }
 
     @Override
     public String getErrorPath() {
-        return "/error";
+        return ERROR_PATH;
     }
 }

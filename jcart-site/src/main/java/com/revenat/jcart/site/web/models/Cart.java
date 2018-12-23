@@ -27,7 +27,7 @@ public class Cart implements Serializable {
 
     public void addItem(Product product) {
         for (LineItem lineItem : items) {
-            if (lineItem.containsProduct(product)) {
+            if (lineItem.contains(product)) {
                 lineItem.setQuantity(lineItem.getQuantity()+1);
                 return;
             }
@@ -38,7 +38,7 @@ public class Cart implements Serializable {
 
     public void updateItemQuantity(Product product, int quantity) {
         for (LineItem lineItem : items) {
-            if (lineItem.containsProduct(product)) {
+            if (lineItem.contains(product)) {
                 lineItem.setQuantity(quantity);
                 return;
             }
@@ -46,7 +46,7 @@ public class Cart implements Serializable {
     }
 
     public void removeItem(Product product) {
-        items.removeIf(item -> item.containsProduct(product));
+        items.removeIf(item -> item.contains(product));
     }
 
     public void removeItem(String sku) {

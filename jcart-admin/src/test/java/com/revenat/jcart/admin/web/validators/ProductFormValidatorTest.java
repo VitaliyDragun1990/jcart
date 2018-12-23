@@ -27,9 +27,10 @@ public class ProductFormValidatorTest {
     private ProductFormValidator validator;
 
     @Test
-    public void testValidate_OK() {
+    public void validate_UniqueSku_NoErrors() {
         ProductForm form = new ProductForm();
         form.setSku(PRODUCT_SKU);
+        when(catalogService.getProductBySku(PRODUCT_SKU)).thenReturn(null);
 
         validator.validate(form, errors);
 
@@ -37,7 +38,7 @@ public class ProductFormValidatorTest {
     }
 
     @Test
-    public void Validate_OK_UpdateForm() {
+    public void validate_FromWithId_NoErrors() {
         ProductForm form = new ProductForm();
         form.setSku(PRODUCT_SKU);
         form.setId(1);
@@ -49,7 +50,7 @@ public class ProductFormValidatorTest {
     }
 
     @Test
-    public void testValidate_Error() {
+    public void validate_SkuTaken_ValidationError() {
         ProductForm form = new ProductForm();
         form.setSku(PRODUCT_SKU);
         when(catalogService.getProductBySku(PRODUCT_SKU)).thenReturn(new Product());
@@ -60,14 +61,14 @@ public class ProductFormValidatorTest {
     }
 
     @Test
-    public void testSupport_OK() {
+    public void support_ValidClass_ReturnsTrue() {
         boolean result = validator.supports(ProductForm.class);
 
         assertTrue(result);
     }
 
     @Test
-    public void testValidate_Fail() {
+    public void support_WrongClass_ReturnsFalse() {
         boolean result = validator.supports(Product.class);
 
         assertFalse(result);

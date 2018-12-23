@@ -3,13 +3,13 @@ package com.revenat.jcart.core.catalog;
 import com.revenat.jcart.core.entities.Category;
 import com.revenat.jcart.core.entities.Product;
 import com.revenat.jcart.core.exceptions.JCartException;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,185 +24,280 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class JCartCatalogServiceTest {
 
+    private static final String CATEGORY_NAME = "test_category";
+    private static final String CATEGORY_DESCRIPTION = "test_category_description";
+    private static final int CATEGORY_DISPLAY_ORDER = 1;
+    private static final int ID = 1;
+    private static final boolean IS_DISABLED = false;
+    private static final String PRODUCT_DESCRIPTION = "test_product_description";
+    private static final String PRODUCT_SKU = "test_sku";
+    private static final BigDecimal PRODUCT_PRICE = BigDecimal.ZERO;
+    private static final String QUERY = "test";
+
     @Mock
     private ProductRepository productRepository;
     @Mock
     private CategoryRepository categoryRepository;
 
     @InjectMocks
-    private JCartCatalogService service;
-
-    private Category stubCategory;
-    private Product stubProduct;
-
-    @Before
-    public void setUpStabs() {
-        stubCategory = new Category();
-        stubCategory.setName("test");
-        stubCategory.setDescription("stub");
-        stubCategory.setDisplayOrder(1);
-        stubCategory.setDisabled(false);
-
-        stubProduct = new Product();
-        stubProduct.setName("test");
-        stubProduct.setDescription("stub");
-        stubProduct.setDisabled(false);
-        stubProduct.setPrice(BigDecimal.ZERO);
-        stubProduct.setCategory(stubCategory);
-    }
+    private JCartCatalogService catalogService;
 
     @Test
-    public void getAllCategories() {
+    public void getAllCategories_ShouldReturnAllCategories() {
         when(categoryRepository.findAll()).thenReturn(new ArrayList<>());
 
-        List<Category> allCategories = service.getAllCategories();
+        List<Category> allCategories = catalogService.getAllCategories();
 
         assertThat(allCategories, hasSize(0));
         verify(categoryRepository, times(1)).findAll();
     }
 
     @Test
-    public void getAllProducts() {
+    public void getAllProducts_ShouldReturnAllProducts() {
         when(productRepository.findAll()).thenReturn(new ArrayList<>());
 
-        List<Product> allProducts = service.getAllProducts();
+        List<Product> allProducts = catalogService.getAllProducts();
 
         assertThat(allProducts, hasSize(0));
         verify(productRepository, times(1)).findAll();
     }
 
     @Test
-    public void getCategoryByName() {
-        when(categoryRepository.getByName("test")).thenReturn(stubCategory);
+    public void getCategoryByName_ValidName_ShouldReturnCategory() {
+        Category category = new CategoryBuilder()
+                .withName(CATEGORY_NAME)
+                .build();
+        when(categoryRepository.getByName(CATEGORY_NAME)).thenReturn(category);
 
-        Category category = service.getCategoryByName("test");
+        Category result = catalogService.getCategoryByName(CATEGORY_NAME);
 
-        assertThat(category, equalTo(stubCategory));
-        verify(categoryRepository, times(1)).getByName(anyString());
+        assertThat(result, equalTo(category));
+        verify(categoryRepository, times(1)).getByName(CATEGORY_NAME);
     }
 
     @Test
-    public void getCategoryById() {
-        when(categoryRepository.findOne(1)).thenReturn(stubCategory);
+    public void getCategoryByName_InvalidName_ShouldReturnNull() {
+        when(categoryRepository.getByName(CATEGORY_NAME)).thenReturn(null);
 
-        Category category = service.getCategoryById(1);
+        Category result = catalogService.getCategoryByName(CATEGORY_NAME);
 
-        assertThat(category, equalTo(stubCategory));
-        verify(categoryRepository, times(1)).findOne(1);
+        assertThat(result, equalTo(null));
+        verify(categoryRepository, times(1)).getByName(CATEGORY_NAME);
     }
 
     @Test
-    public void createCategory_Ok() {
-        when(categoryRepository.save(Matchers.any(Category.class))).thenReturn(stubCategory);
+    public void getCategoryById_ValidId_ShouldReturnCategory() {
+        Category category = new CategoryBuilder()
+                .withId(ID)
+                .build();
+        when(categoryRepository.findOne(ID)).thenReturn(category);
 
-        Category category = service.createCategory(stubCategory);
+        Category result= catalogService.getCategoryById(ID);
 
-        assertThat(category, equalTo(stubCategory));
-        verify(categoryRepository, times(1)).getByName(anyString());
-        verify(categoryRepository, times(1)).save(stubCategory);
+        assertThat(result, equalTo(category));
+        verify(categoryRepository, times(1)).findOne(ID);
+    }
+
+    @Test
+    public void getCategoryById_InvalidId_ShouldReturnNull() {
+        when(categoryRepository.findOne(ID)).thenReturn(null);
+
+        Category result= catalogService.getCategoryById(ID);
+
+        assertThat(result, equalTo(null));
+        verify(categoryRepository, times(1)).findOne(ID);
+    }
+
+    @Test
+    public void createCategory_UniqueNameGiven_CategoryCreated() {
+        Category category = new CategoryBuilder()
+                .withName(CATEGORY_NAME)
+                .build();
+        when(categoryRepository.save(isA(Category.class))).then((Answer<Category>) invocationOnMock -> {
+            Category categoryToSave = (Category) invocationOnMock.getArguments()[0];
+            categoryToSave.setId(ID);
+            return categoryToSave;
+        });
+
+        Category result = catalogService.createCategory(category);
+
+        assertThat(result.getName(), equalTo(CATEGORY_NAME));
+        assertThat(result.getId(), equalTo(ID));
+        verify(categoryRepository, times(1)).getByName(CATEGORY_NAME);
+        verify(categoryRepository, times(1)).save(category);
     }
 
     @Test(expected = JCartException.class)
-    public void createCategory_FailNameAlreadyExists() {
-        when(categoryRepository.getByName("test")).thenReturn(stubCategory);
+    public void createCategory_ExistedNameGiven_ExceptionThrown() {
+        Category category = new CategoryBuilder()
+                .withName(CATEGORY_NAME)
+                .build();
+        when(categoryRepository.getByName(CATEGORY_NAME)).thenReturn(category);
 
-        service.createCategory(stubCategory);
+        catalogService.createCategory(category);
     }
 
     @Test
-    public void updateCategory_Ok() {
-        Category category = new Category();
-        when(categoryRepository.findOne(1)).thenReturn(category);
-        when(categoryRepository.save(Matchers.any(Category.class))).thenReturn(category);
-        stubCategory.setId(1);
+    public void updateCategory_ValidId_CategoryUpdated() {
+        Category existedCategory = new CategoryBuilder()
+                .withId(ID)
+                .build();
+        Category updateHolder = new CategoryBuilder()
+                .withId(ID)
+                .withDisplayOrder(CATEGORY_DISPLAY_ORDER)
+                .withDescription(CATEGORY_DESCRIPTION)
+                .setDisabled(IS_DISABLED)
+                .build();
+        when(categoryRepository.findOne(ID)).thenReturn(existedCategory);
+        when(categoryRepository.save(isA(Category.class))).thenAnswer(
+                (Answer<Category>) invocationOnMock -> (Category) invocationOnMock.getArguments()[0]);
 
-        Category updatedCategory = service.updateCategory(stubCategory);
+        Category updatedCategory = catalogService.updateCategory(updateHolder);
 
-        assertThat(updatedCategory.getDescription(), equalTo(stubCategory.getDescription()));
-        assertThat(updatedCategory.getDisplayOrder(), equalTo(stubCategory.getDisplayOrder()));
-        assertThat(updatedCategory.isDisabled(), equalTo(stubCategory.isDisabled()));
-        verify(categoryRepository, times(1)).findOne(anyInt());
-        verify(categoryRepository, times(1)).save(Matchers.any(Category.class));
+        assertThat(updatedCategory.getDescription(), equalTo(CATEGORY_DESCRIPTION));
+        assertThat(updatedCategory.getDisplayOrder(), equalTo(CATEGORY_DISPLAY_ORDER));
+        assertThat(updatedCategory.isDisabled(), equalTo(IS_DISABLED));
+        verify(categoryRepository, times(1)).findOne(ID);
+        verify(categoryRepository, times(1)).save(isA(Category.class));
     }
 
     @Test(expected = JCartException.class)
-    public void updateCategoryFail_NoSuchCategory() {
-        when(categoryRepository.findOne(anyInt())).thenReturn(null);
+    public void updateCategory_InvalidId_ExceptionThrown() {
+        Category category = new CategoryBuilder()
+                .withId(ID)
+                .build();
+        when(categoryRepository.findOne(ID)).thenReturn(null);
 
-        service.updateCategory(stubCategory);
+        catalogService.updateCategory(category);
     }
 
     @Test
-    public void getProductById() {
-        when(productRepository.findOne(anyInt())).thenReturn(stubProduct);
+    public void getProductById_ValidId_ShouldReturnProduct() {
+        Product product = new ProductBuilder()
+                .withId(ID)
+                .build();
+        when(productRepository.findOne(ID)).thenReturn(product);
 
-        Product product = service.getProductById(1);
+        Product result = catalogService.getProductById(ID);
 
-        assertThat(product, equalTo(stubProduct));
-        verify(productRepository, times(1)).findOne(1);
+        assertThat(result, equalTo(product));
+        verify(productRepository, times(1)).findOne(ID);
     }
 
     @Test
-    public void getProductBySku() {
-        when(productRepository.findBySku("test")).thenReturn(stubProduct);
+    public void getProductById_InvalidId_ShouldReturnNull() {
+        when(productRepository.findOne(ID)).thenReturn(null);
 
-        Product product = service.getProductBySku("test");
+        Product result = catalogService.getProductById(ID);
 
-        assertThat(product, equalTo(stubProduct));
-        verify(productRepository, times(1)).findBySku("test");
+        assertThat(result, equalTo(null));
+        verify(productRepository, times(1)).findOne(ID);
     }
 
     @Test
-    public void createProduct_Ok() {
-        when(productRepository.save(Matchers.any(Product.class))).thenReturn(stubProduct);
+    public void getProductBySku_ValidSku_ShouldReturnProduct() {
+        Product product = new ProductBuilder()
+                .withSku(PRODUCT_SKU)
+                .build();
+        when(productRepository.findBySku(PRODUCT_SKU)).thenReturn(product);
 
-        Product product = service.createProduct(stubProduct);
+        Product result = catalogService.getProductBySku(PRODUCT_SKU);
 
-        assertThat(product, equalTo(stubProduct));
-        verify(productRepository, times(1)).findBySku(stubProduct.getSku());
-        verify(productRepository, times(1)).save(Matchers.any(Product.class));
+        assertThat(result.getSku(), equalTo(PRODUCT_SKU));
+        verify(productRepository, times(1)).findBySku(PRODUCT_SKU);
+    }
+
+    @Test
+    public void getProductBySku_InvalidSku_ShouldReturnNull() {
+        when(productRepository.findBySku(PRODUCT_SKU)).thenReturn(null);
+
+        Product result = catalogService.getProductBySku(PRODUCT_SKU);
+
+        assertThat(result, equalTo(null));
+        verify(productRepository, times(1)).findBySku(PRODUCT_SKU);
+    }
+
+    @Test
+    public void createProduct_UniqueSkuGiven_NewProductCreated() {
+        Product newProduct = new ProductBuilder()
+                .withSku(PRODUCT_SKU)
+                .build();
+        when(productRepository.findBySku(PRODUCT_SKU)).thenReturn(null);
+        when(productRepository.save(isA(Product.class))).thenAnswer((Answer<Product>) invocationOnMock -> {
+            Product productToSave = (Product) invocationOnMock.getArguments()[0];
+            productToSave.setId(ID);
+            return productToSave;
+        });
+
+        Product savedProduct = catalogService.createProduct(newProduct);
+
+        assertThat(savedProduct.getSku(), equalTo(PRODUCT_SKU));
+        assertThat(savedProduct.getId(), equalTo(ID));
+        verify(productRepository, times(1)).findBySku(PRODUCT_SKU);
+        verify(productRepository, times(1)).save(isA(Product.class));
+        verifyZeroInteractions(productRepository);
     }
 
     @Test(expected = JCartException.class)
-    public void createProduct_FailSkuAlreadyExists() {
-        when(productRepository.findBySku(stubProduct.getSku())).thenReturn(stubProduct);
+    public void createProduct_OccupiedSkuGiven_ExceptionThrown() {
+        Product newProduct = new ProductBuilder()
+                .withSku(PRODUCT_SKU)
+                .build();
+        when(productRepository.findBySku(PRODUCT_SKU)).thenReturn(new ProductBuilder().build());
 
-        service.createProduct(stubProduct);
+        catalogService.createProduct(newProduct);
     }
 
     @Test
-    public void updateProduct_Ok() {
-        Product product = new Product();
-        when(productRepository.findOne(1)).thenReturn(product);
-        when(categoryRepository.findOne(1)).thenReturn(stubCategory);
-        when(productRepository.save(product)).thenReturn(product);
-        stubProduct.setId(1);
-        stubCategory.setId(1);
+    public void updateProduct_ValidId_ProductUpdated() {
+        Product existedProduct = new ProductBuilder()
+                .withId(ID)
+                .build();
+        Category category = new CategoryBuilder().withId(ID).build();
+        Product updateHolder = new ProductBuilder()
+                .withId(ID)
+                .withDescription(PRODUCT_DESCRIPTION)
+                .setDisabled(IS_DISABLED)
+                .withPrice(PRODUCT_PRICE)
+                .withCategory(category)
+                .build();
+        when(productRepository.findOne(ID)).thenReturn(existedProduct);
+        when(categoryRepository.findOne(ID)).thenReturn(category);
+        when(productRepository.save(isA(Product.class))).thenAnswer(
+                (Answer<Product>) invocationOnMock -> (Product) invocationOnMock.getArguments()[0]);
 
-        Product updatedProduct = service.updateProduct(stubProduct);
+        Product updatedProduct = catalogService.updateProduct(updateHolder);
 
-        assertThat(updatedProduct.getDescription(), equalTo(stubProduct.getDescription()));
-        assertThat(updatedProduct.isDisabled(), equalTo(stubProduct.isDisabled()));
-        assertThat(updatedProduct.getPrice(), equalTo(stubProduct.getPrice()));
-        assertThat(updatedProduct.getCategory(), equalTo(stubProduct.getCategory()));
-        verify(productRepository, times(1)).findOne(anyInt());
-        verify(productRepository, times(1)).save(Matchers.any(Product.class));
+        assertThat(updatedProduct.getDescription(), equalTo(PRODUCT_DESCRIPTION));
+        assertThat(updatedProduct.isDisabled(), equalTo(IS_DISABLED));
+        assertThat(updatedProduct.getPrice(), equalTo(PRODUCT_PRICE));
+        assertThat(updatedProduct.getCategory(), equalTo(category));
+        verify(productRepository, times(1)).findOne(ID);
+        verify(productRepository, times(1)).save(isA(Product.class));
     }
 
     @Test(expected = JCartException.class)
-    public void updateProduct_FailNoSuchProduct() {
+    public void updateProduct_InvalidIdGiven_ExceptionThrown() {
+        Product product = new ProductBuilder()
+                .withId(ID)
+                .build();
         when(productRepository.findOne(anyInt())).thenReturn(null);
-        stubProduct.setId(1);
 
-        service.updateProduct(stubProduct);
+        catalogService.updateProduct(product);
     }
 
     @Test
-    public void searchProduct() {
+    public void searchProduct_QueryGiven_ShouldReturnSearchResult() {
+        String completedQuery = "%" + QUERY + "%";
+        ArgumentCaptor<String> queryCaptor = ArgumentCaptor.forClass(String.class);
         when(productRepository.search(anyString())).thenReturn(new ArrayList<>());
 
-        List<Product> products = service.searchProduct("test");
+        List<Product> products = catalogService.searchProduct(QUERY);
 
+        verify(productRepository, timeout(1)).search(queryCaptor.capture());
+        String searchQuery = queryCaptor.getValue();
+        assertThat(searchQuery, equalTo(completedQuery));
         assertThat(products, hasSize(0));
     }
+
 }

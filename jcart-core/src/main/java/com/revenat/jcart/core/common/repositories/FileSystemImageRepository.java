@@ -28,8 +28,8 @@ public class FileSystemImageRepository implements ImageRepository {
     public void saveImage(byte[] imageContent, String imageName) {
         if (imageContent != null && imageContent.length > 0) {
             String path = imagesDir + imageName;
-            try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(path)))) {
-                out.write(imageContent);
+            try  {
+                writeToStream(path, imageContent);
             } catch (IOException e) {
                 LOGGER.error("Error while saving image to disk.", e);
                 throw new JCartException(e);
@@ -37,16 +37,28 @@ public class FileSystemImageRepository implements ImageRepository {
         }
     }
 
+    private void writeToStream(String path, byte[] data) throws IOException {
+        try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(new File(path)))) {
+            outputStream.write(data);
+        }
+    }
+
     @Override
     public byte[] loadImage(String imageName) {
         String path = imagesDir + imageName;
-        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(new File(path)))) {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            IOUtils.copy(in, out);
-            return out.toByteArray();
+        try {
+            return loadFromStream(path);
         } catch (IOException e) {
             LOGGER.error("Error while reading image from disk.", e);
         }
         return new byte[0];
+    }
+
+    private byte[] loadFromStream(String path) throws IOException {
+        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(new File(path)))) {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            IOUtils.copy(in, out);
+            return out.toByteArray();
+        }
     }
 }

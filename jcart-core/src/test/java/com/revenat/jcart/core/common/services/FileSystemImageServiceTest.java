@@ -26,14 +26,14 @@ public class FileSystemImageServiceTest {
     private FileSystemImageService imageService;
 
     @Test
-    public void testSaveImage() {
+    public void saveImage_ShouldSaveImageToDisk() {
         imageService.saveImage(IMAGE_NAME, IMAGE_CONTENT);
 
         verify(imageRepository, times(1)).saveImage(IMAGE_CONTENT, IMAGE_NAME);
     }
 
     @Test
-    public void testLoadImage() {
+    public void loadImage_ShouldLoadImageFromDisk() {
         when(imageRepository.loadImage(IMAGE_NAME)).thenReturn(IMAGE_CONTENT);
 
         byte[] image = imageService.loadImage(IMAGE_NAME);

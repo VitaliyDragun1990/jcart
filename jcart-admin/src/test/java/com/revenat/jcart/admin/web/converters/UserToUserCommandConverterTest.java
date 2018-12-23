@@ -5,33 +5,40 @@ import com.revenat.jcart.core.entities.Role;
 import com.revenat.jcart.core.entities.User;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.*;
 
 public class UserToUserCommandConverterTest {
+    private static final int ID = 1;
+    private static final String NAME = "Jack";
+    private static final String EMAIL = "jack@gmail.com";
+    private static final String PASSWORD = "test";
 
     private UserToUserCommandConverter converter = new UserToUserCommandConverter();
 
     @Test
     public void convertUserToUserCommand() {
         Role role = new Role();
-        role.setId(1);
-        role.setName("ROLE_DUMMY");
-        User user = new User();
-        user.setId(1);
-        user.setName("Jack");
-        user.setEmail("jack@gmail.com");
-        user.setPassword("test");
-        user.setRoles(new ArrayList<Role>(){{add(role);}});
+        User user = createUserWithRole(ID, NAME, EMAIL, PASSWORD, role);
 
         UserCommand command = converter.convert(user);
 
-        assertThat(command.getId(), equalTo(user.getId()));
-        assertThat(command.getName(), equalTo(user.getName()));
-        assertThat(command.getEmail(), equalTo(user.getEmail()));
-        assertThat(command.getPassword(), equalTo(user.getPassword()));
-        assertThat(command.getRoles(), equalTo(user.getRoles()));
+        assertThat(command.getId(), equalTo(ID));
+        assertThat(command.getName(), equalTo(NAME));
+        assertThat(command.getEmail(), equalTo(EMAIL));
+        assertThat(command.getPassword(), equalTo(PASSWORD));
+        assertThat(command.getRoles(), hasSize(1));
+    }
+
+    private User createUserWithRole(Integer id, String name, String email, String password, Role role) {
+        User user = new User();
+        user.setId(id);
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.getRoles().add(role);
+
+        return user;
     }
 }

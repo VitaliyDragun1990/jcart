@@ -3,6 +3,7 @@ package com.revenat.jcart.site.web.controllers;
 import com.revenat.jcart.core.catalog.CatalogService;
 import com.revenat.jcart.core.entities.Category;
 import com.revenat.jcart.core.entities.Product;
+import com.revenat.jcart.core.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,9 @@ public class HomeController extends JCartSiteBaseController {
     @RequestMapping(value = "/categories/{name}", method = RequestMethod.GET)
     public String category(@PathVariable("name") String name, Model model) {
         Category category = catalogService.getCategoryByName(name);
+        if (category == null) {
+            throw new NotFoundException("Couldn't found category with name: " + name);
+        }
         model.addAttribute("category", category);
 
         return "public/category";

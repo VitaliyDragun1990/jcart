@@ -1,7 +1,5 @@
 package com.revenat.jcart.core;
 
-import com.revenat.jcart.core.common.services.SimpleEmailService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +19,12 @@ public class JCartCoreApplicationIT {
 
     @Autowired
     private DataSource dataSource;
-    @Autowired
-    private SimpleEmailService emailService;
 
     @Test
-    public void testDummy() throws SQLException {
+    public void getCatalog_AssertThatDbSchemaExists() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             String schema = connection.getCatalog();
             assertEquals("JCART", schema);
         }
-    }
-
-    @Test
-    @Ignore
-    public void testSendEmail() {
-        emailService.sendEmail("visperboy@gmail.com", "JCart - Test Mail", "This is a test email from JCart");
     }
 }

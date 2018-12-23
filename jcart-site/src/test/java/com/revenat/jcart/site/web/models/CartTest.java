@@ -23,7 +23,7 @@ public class CartTest {
     }
 
     @Test
-    public void createsEmptyCart() {
+    public void defaultConstructor_CreatesEmptyCart() {
         cart = new Cart();
 
         assertThat(cart.getItemCount(), equalTo(0));
@@ -35,7 +35,7 @@ public class CartTest {
     }
 
     @Test
-    public void addUniqueProductToCart_IncreaseLineItemsSize() {
+    public void addItem_DistinctProductGiven_IncreasesLineItemsSize() {
         assertThat(cart.getItems(), hasSize(0));
 
         cart.addItem(buildProduct("test01", BigDecimal.ONE));
@@ -45,7 +45,7 @@ public class CartTest {
     }
 
     @Test
-    public void addUniqueProductToCart_IncreaseItemCount() {
+    public void addItem_DistinctProductGiven_IncreasesItemCount() {
         assertThat(cart.getItemCount(), equalTo(0));
 
         cart.addItem(buildProduct("test01", BigDecimal.ONE));
@@ -55,7 +55,7 @@ public class CartTest {
     }
 
     @Test
-    public void addSameProductSeveralTimes_IncreaseItemCountNotLineItemSize() {
+    public void addItem_SameProductSeveralTimes_IncreasesItemCountNotLineItemsSize() {
         assertThat(cart.getItems(), hasSize(0));
         assertThat(cart.getItemCount(), equalTo(0));
 
@@ -68,7 +68,7 @@ public class CartTest {
     }
 
     @Test
-    public void updateItemQuantityIfProductInCart() {
+    public void updateItemQuantity_ProductAsInCartGiven_ChangesItemCount() {
         Product product = buildProduct("test01", BigDecimal.ONE);
         cart.addItem(product);
         cart.addItem(product);
@@ -80,7 +80,7 @@ public class CartTest {
     }
 
     @Test
-    public void notUpdateItemQuantityIfProductNotInCart() {
+    public void updateItemQuantity_ProductNotInCartGiven_ShouldNotChangeItemCount() {
         Product product = buildProduct("test01", BigDecimal.ONE);
         cart.addItem(product);
         cart.addItem(product);
@@ -92,7 +92,7 @@ public class CartTest {
     }
 
     @Test
-    public void removesItemFromCartByProduct_IfExistInCart() {
+    public void removeItem_ProductInCartGiven_RemovesSuchProductFromCart() {
         Product product = buildProduct("test01", BigDecimal.ONE);
         cart.addItem(product);
         assertThat(cart.getItemCount(), equalTo(1));
@@ -103,7 +103,7 @@ public class CartTest {
     }
 
     @Test
-    public void removesItemFromCartBySku_IfExistInCart() {
+    public void removeItem_SkuFromInProductInCartGiven_RemovesSuchProductFromCart() {
         Product product = buildProduct("test01", BigDecimal.ONE);
         cart.addItem(product);
         assertThat(cart.getItemCount(), equalTo(1));
@@ -114,7 +114,7 @@ public class CartTest {
     }
 
     @Test
-    public void DontChangeItemCount_IfRemoveProductNotInCart() {
+    public void removeItem_productNotInCartGiven_DoesNotChangeCart() {
         Product product = buildProduct("test01", BigDecimal.ONE);
         cart.addItem(product);
         assertThat(cart.getItemCount(), equalTo(1));
@@ -125,7 +125,7 @@ public class CartTest {
     }
 
     @Test
-    public void removeAllItemsFromCart() {
+    public void clearItems_RemovesAllProductsFromCart() {
         cart.addItem(buildProduct("test01", BigDecimal.ONE));
         cart.addItem(buildProduct("test01", BigDecimal.ONE));
         cart.addItem(buildProduct("test01", BigDecimal.ONE));
@@ -137,14 +137,14 @@ public class CartTest {
     }
 
     @Test
-    public void returnsZeroAmountIfCartEmpty() {
+    public void getTotalAmount_CartEmpty_ReturnsZero() {
         BigDecimal totalAmount = cart.getTotalAmount();
 
         assertThat(totalAmount, equalTo(BigDecimal.ZERO));
     }
 
     @Test
-    public void returnsTotalAmountOfAllItemInCart() {
+    public void getTotalAmount_CartWithItems_ReturnsSumOfItemsAmounts() {
         cart.addItem(buildProduct("test01", BigDecimal.ONE));
         cart.addItem(buildProduct("test01", BigDecimal.ONE));
         cart.addItem(buildProduct("test02", BigDecimal.TEN));

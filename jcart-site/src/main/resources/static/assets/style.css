@@ -685,7 +685,20 @@ width: 10px;
   font-size: 50px;
   font-weight: 200;
   margin: 0;
-  padding: 50px 0;color: #fff;
+  padding: 50px 0;
+    color: #fff;
+}
+
+.error-big-title-area {background: url(img/crossword.png) repeat scroll 0 0 #ca3724
+}
+
+.error-bit-title h2 {
+    font-family: raleway;
+    font-size: 50px;
+    font-weight: 200;
+    margin: 0;
+    padding: 50px 0;
+    color: #fff;
 }
 
 .single-product-area .zigzag-bottom {background-color: #f4f4f4}

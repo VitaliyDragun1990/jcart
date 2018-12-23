@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title th:text="#{title.customer_view}">Customer - View</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title" th:text="#{label.view_customer}">View Customer</h3>
+                </div>
+
+                <div class="box-body">
+
+                    <div th:unless="${customer}">
+                        <h2 th:text="#{info.no_customer_found}">No customer found with given id</h2>
+                    </div>
+
+                    <form role="form" th:if="${customer}" action="#" th:object="${customer}" method="post">
+
+                        <div class="form-group">
+                            <label th:text="#{label.firstName}">FirstName</label> <input type="text" class="form-control"
+                                                            th:field="*{firstName}" readonly="readonly" />
+                        </div>
+
+                        <div class="form-group">
+                            <label th:text="#{label.lastName}">LastName</label> <input type="text" class="form-control"
+                                                           th:field="*{lastName}" readonly="readonly" />
+                        </div>
+
+                        <div class="form-group">
+                            <label th:text="#{label.email}">Email</label> <input type="email" class="form-control"
+                                                        th:field="*{email}" readonly="readonly" />
+                        </div>
+
+                        <div class="form-group">
+                            <label th:text="#{label.phone}">Phone</label> <input type="text" class="form-control"
+                                                        th:field="*{phone}" readonly="readonly" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>
